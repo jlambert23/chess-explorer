@@ -10,21 +10,13 @@ fs.readFile('./test-png.txt', 'utf8', (_, data) => {
   const games = parser.parse(data, { startRule: 'games' });
 
   const whiteGames = games.filter((game) => game.tags.White === user);
-  const whiteExplorer = createExplorer(whiteGames);
+  const whiteExplorer = new ChessExplorerTrie(whiteGames);
   dumpExplorer(whiteExplorer, 'white');
 
   const blackGames = games.filter((game) => game.tags.Black === user);
-  const blackExplorer = createExplorer(blackGames);
+  const blackExplorer = new ChessExplorerTrie(blackGames);
   dumpExplorer(blackExplorer, 'black');
 });
-
-function createExplorer(games: parser.Game[]) {
-  const explorer = new ChessExplorerTrie();
-  for (const game of games) {
-    explorer.put(game);
-  }
-  return explorer;
-}
 
 function dumpExplorer(explorer: ChessExplorerTrie, path: string) {
   const toJson = (value: any) => JSON.stringify(value, null, 1);

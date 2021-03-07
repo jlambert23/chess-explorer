@@ -22,12 +22,18 @@ interface NotationNode {
 export class ChessExplorerTrie {
   root: MoveNode;
 
-  constructor() {
+  constructor(games?: Game[]) {
     this.root = {
       children: [],
       value: null,
       meta: null,
     };
+
+    if (games) {
+      for (const game of games) {
+        this.put(game);
+      }
+    }
   }
 
   put(game: Game) {
