@@ -3,41 +3,51 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 
 import { ChessExplorerTrie } from './chess-explorer-trie';
+import { getGamesAsPgns } from './apis/chess-com.api';
 
-const user = 'justuntinian';
+const player = 'justuntinian';
+const dumpDir = `out/${player}`;
 
-fs.readFile('./test-png.txt', 'utf8', (_, data) => {
-  const games = parser.parse(data, { startRule: 'games' });
+function createExplorers(games: parser.Game[]) {
+  const whiteGames = games.filter(
+    ({ tags }) => tags.White.toLowerCase() === player.toLowerCase()
+  );
+  console.log(`found ${whiteGames.length} white games`);
 
-  const whiteGames = games.filter((game) => game.tags.White === user);
+  const blackGames = games.filter(
+    ({ tags }) => tags.Black.toLowerCase() === player.toLowerCase()
+  );
+  console.log(`found ${blackGames.length} black games`);
+
   const whiteExplorer = new ChessExplorerTrie(whiteGames);
-  dumpExplorer(whiteExplorer, 'white');
-
-  const blackGames = games.filter((game) => game.tags.Black === user);
   const blackExplorer = new ChessExplorerTrie(blackGames);
-  dumpExplorer(blackExplorer, 'black');
-});
 
-function dumpExplorer(explorer: ChessExplorerTrie, path: string) {
-  const toJson = (value: any) => JSON.stringify(value, null, 1);
-  const toYaml = (value: any) => yaml.dump(value);
-
-  const _path = `out/${path}`;
-  fs.mkdirSync(_path, { recursive: true });
-
-  const rootJsonPath = `${_path}/root.json`;
-  fs.writeFileSync(rootJsonPath, toJson(explorer.root));
-  console.log('updated ' + rootJsonPath);
-
-  const notationJsonPath = `${_path}/notation.json`;
-  fs.writeFileSync(notationJsonPath, toJson(explorer.toNotation()));
-  console.log('updated ' + notationJsonPath);
-
-  const rootYamlPath = `${_path}/root.yaml`;
-  fs.writeFileSync(rootYamlPath, toYaml(explorer.root));
-  console.log('updated ' + rootYamlPath);
-
-  const notationYamlPath = `${_path}/notation.yaml`;
-  fs.writeFileSync(notationYamlPath, toYaml(explorer.toNotation()));
-  console.log('updated ' + notationYamlPath);
+  dumpExplorer(`${dumpDir}/white`, whiteExplorer);
+  dumpExplorer(`${dumpDir}/black`, blackExplorer);
 }
+
+function dumpExplorer(rootPath: string, explorer: ChessExplorerTrie) {
+  dumpToFile(`${rootPath}/root.json`, JSON.stringify(explorer.root, null, 2));
+  dumpToFile(`${rootPath}/notation.yaml`, yaml.dump(explorer.toNotation()));
+}
+
+function dumpToFile(path: string, data: any) {
+  const folders = path.split('/');
+  const folderPath = folders.slice(0, folders.length - 1).join('/');
+  fs.mkdirSync(folderPath, { recursive: true });
+  fs.writeFileSync(path, data);
+  console.log(`updated ${path}`);
+}
+
+async function main() {
+  try {
+    const pgns = await getGamesAsPgns(player);
+    dumpToFile(`${dumpDir}/pgns.json`, pgns);
+    const games = parser.parse(pgns, { startRule: 'games' });
+    createExplorers(games);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+(async () => main())();
