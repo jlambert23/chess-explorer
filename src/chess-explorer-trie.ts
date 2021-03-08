@@ -1,10 +1,9 @@
 import { Game, Move } from '@mliebelt/pgn-parser';
 
 interface Meta {
-  count: number;
-  chance: {
-    win: number;
-    lose: number;
+  result: {
+    white: number;
+    black: number;
     draw: number;
   };
 }
@@ -43,12 +42,26 @@ export class ChessExplorerTrie {
       moves = game.moves.slice(0, game.moves.length - 1) as Move[];
     }
 
-    this._put(moves as Move[], this.root);
+    this._put(moves as Move[], this.root, game.tags.Result);
     return this.root;
   }
 
   toNotation() {
     return this._toNotation(this.root);
+  }
+
+  private _createNode(value: Move) {
+    return {
+      children: [],
+      value: value,
+      meta: {
+        result: {
+          white: 0,
+          black: 0,
+          draw: 0,
+        },
+      },
+    };
   }
 
   private _isEqual(a: Move, b: Move) {
@@ -59,7 +72,7 @@ export class ChessExplorerTrie {
     );
   }
 
-  private _put(moves: Move[], node: MoveNode) {
+  private _put(moves: Move[], node: MoveNode, result: string) {
     if (!moves || !moves.length) {
       return;
     }
@@ -68,22 +81,15 @@ export class ChessExplorerTrie {
     const next = node.children.find(({ value }) =>
       this._isEqual(value, current)
     );
+    this._updateResult(node, result);
 
     if (next) {
-      next.meta.count += 1;
-      return this._put(moves.slice(1), next);
+      return this._put(moves.slice(1), next, result);
     }
 
-    const newNode = {
-      children: [],
-      value: current,
-      meta: {
-        count: 1,
-        chance: null,
-      },
-    };
+    const newNode = this._createNode(current);
     node.children.push(newNode);
-    return this._put(moves.slice(1), newNode);
+    return this._put(moves.slice(1), newNode, result);
   }
 
   private _toNotation(node: MoveNode) {
@@ -91,7 +97,9 @@ export class ChessExplorerTrie {
 
     if (node.value) {
       const ellipses = node.value.turn === 'b' ? '...' : '';
-      value = `${node.value.moveNumber}. ${ellipses}${node.value.notation.notation} (${node.meta.count})`;
+      value =
+        `${node.value.moveNumber}. ${ellipses}${node.value.notation.notation} ` +
+        `(${node.meta.result.white}/${node.meta.result.black}/${node.meta.result.draw})`;
     } else {
       value = 'root';
     }
@@ -103,5 +111,14 @@ export class ChessExplorerTrie {
       },
       { [value]: [] }
     ) as NotationNode;
+  }
+
+  private _updateResult(node: MoveNode, result: string) {
+    if (node.value) {
+      const nodeResult = node.meta.result;
+      const resultKey =
+        result === '1-0' ? 'white' : result === '0-1' ? 'black' : 'draw';
+      nodeResult[resultKey] += 1;
+    }
   }
 }
