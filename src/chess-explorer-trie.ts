@@ -1,22 +1,5 @@
 import { Game, Move } from '@mliebelt/pgn-parser';
-
-interface Meta {
-  result: {
-    white: number;
-    black: number;
-    draw: number;
-  };
-}
-
-interface MoveNode {
-  children: MoveNode[];
-  meta: Meta;
-  value: Move;
-}
-
-interface NotationNode {
-  [value: string]: NotationNode[];
-}
+import { MoveNode, NotationNode } from './models/chess-explorer.model';
 
 export class ChessExplorerTrie {
   root: MoveNode;
