@@ -1,5 +1,5 @@
 import { Game, Move } from '@mliebelt/pgn-parser';
-import { MoveNode, NotationNode } from './models/chess-explorer.model';
+import { MoveNode, NotationNode } from '../models/chess-explorer.model';
 
 export class ChessExplorerTrie {
   root: MoveNode;

@@ -2,7 +2,7 @@ import * as parser from '@mliebelt/pgn-parser';
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 
-import { ChessExplorerTrie } from './chess-explorer-trie';
+import { ChessExplorerTrie } from './services/chess-explorer-trie';
 import { getGamesAsPgns } from './apis/chess-com.api';
 
 const player = 'justuntinian';
