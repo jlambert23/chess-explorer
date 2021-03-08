@@ -1,7 +1,7 @@
 declare module '@mliebelt/pgn-parser' {
   interface Game {
     tags: Tags;
-    moves: Move[];
+    moves: [...Move[], string];
   }
 
   interface Move {
