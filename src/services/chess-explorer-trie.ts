@@ -47,6 +47,17 @@ export class ChessExplorerTrie {
     };
   }
 
+  private _getNextNode(currentMove: Move, node: MoveNode) {
+    let next = node.children.find(({ value }) =>
+      this._isEqual(value, currentMove)
+    );
+    if (!next) {
+      next = this._createNode(currentMove);
+      node.children.push(next);
+    }
+    return next;
+  }
+
   private _isEqual(a: Move, b: Move) {
     return (
       a.moveNumber === b.moveNumber &&
@@ -59,20 +70,8 @@ export class ChessExplorerTrie {
     if (!moves || !moves.length) {
       return;
     }
-
-    const current = moves[0];
-    const next = node.children.find(({ value }) =>
-      this._isEqual(value, current)
-    );
     this._updateResult(node, result);
-
-    if (next) {
-      return this._put(moves.slice(1), next, result);
-    }
-
-    const newNode = this._createNode(current);
-    node.children.push(newNode);
-    return this._put(moves.slice(1), newNode, result);
+    return this._put(moves.slice(1), this._getNextNode(moves[0], node), result);
   }
 
   private _toNotation(node: MoveNode) {
