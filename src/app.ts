@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 
 import { ChessExplorerTrie } from './services/chess-explorer-trie';
-import { getGamesAsPgns } from './apis/chess-com.api';
+import { getGames } from './apis/chess-com.api';
 
 const player = 'justuntinian';
 const dumpDir = `out/${player}`;
@@ -39,9 +39,18 @@ function dumpToFile(path: string, data: any) {
   console.log(`updated ${path}`);
 }
 
+async function getFilteredPgns(player: string) {
+  let { games } = await getGames(player);
+  games = games.filter(({ rules }) => rules === 'chess');
+  return games.reduce((prev, { pgn }, i) => {
+    const newlines = i ? '\n\n' : '';
+    return prev + newlines + pgn;
+  }, '');
+}
+
 async function main() {
   try {
-    const pgns = await getGamesAsPgns(player);
+    const pgns = await getFilteredPgns(player);
     dumpToFile(`${dumpDir}/pgns.json`, pgns);
     const games = parser.parse(pgns, { startRule: 'games' });
     createExplorers(games);
