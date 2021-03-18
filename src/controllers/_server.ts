@@ -10,9 +10,14 @@ export async function connect(dropTables = false) {
   console.log('established connection');
 
   if (dropTables) {
+    await timeout(250);
     await mongoose.connection.collections['pgnlookups'].drop();
     console.log('dropped pgnlookups');
   }
 
   return;
+}
+
+async function timeout(ms: number) {
+  return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
