@@ -2,6 +2,7 @@ import { Chess } from 'chess.js';
 
 import { getGames } from '../apis/chess-com.api';
 import GameModel, { Game, GameDocument } from '../models/data/game.model';
+import PlayerModel from '../models/data/player.model';
 
 export async function loadGame(pgn: string) {
   const chessFullGame = new Chess();
@@ -41,5 +42,13 @@ export async function loadGames(pgns: string[]) {
 export async function loadPlayerGames(playerName: string) {
   const { games } = await getGames(playerName);
   const pgns = games.map((game) => game.pgn);
-  return await loadGames(pgns);
+
+  const player =
+    (await PlayerModel.findOne({ playerName })) ||
+    (await PlayerModel.create({ playerName }));
+
+  player.games = await loadGames(pgns);
+  player.save();
+
+  return player;
 }
