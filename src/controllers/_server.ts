@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-export async function connect() {
+export async function connect(dropDatabase = false) {
   await mongoose.connect('mongodb://localhost/chess-explorer', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -8,5 +8,14 @@ export async function connect() {
     useCreateIndex: true,
   });
   console.log('established connection');
-  return;
+
+  if (dropDatabase) {
+    await timeout(250);
+    await mongoose.connection.dropDatabase();
+    console.log('dropped database');
+  }
+}
+
+async function timeout(ms: number) {
+  return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
