@@ -27,7 +27,14 @@ export async function loadGame(pgn: string) {
     ),
   } as Game;
 
-  return await GameModel.create(newGame);
+  return (
+    (await GameModel.findOne({
+      white: newGame.white,
+      black: newGame.black,
+      date: newGame.date,
+      result: newGame.result,
+    })) || (await GameModel.create(newGame))
+  );
 }
 
 export async function loadGames(pgns: string[]) {
