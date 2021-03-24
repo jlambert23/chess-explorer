@@ -1,5 +1,5 @@
-import { get } from './_https.api';
-import { ChessArchives, ChessGames } from '../models/chess-com.model';
+import { get } from '../_https.api';
+import { ChessArchives, ChessGames } from './chess.com.model';
 
 const chessApiUrl = 'https://api.chess.com/pub/player';
 

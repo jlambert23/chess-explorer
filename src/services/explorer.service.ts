@@ -1,4 +1,4 @@
-import GameModel from './../models/data/game.model';
+import GameModel from '../models/game.model';
 
 type FenDict = {
   [fen: string]: { whiteWon: number; blackWon: number; draw: number };
