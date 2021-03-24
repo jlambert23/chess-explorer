@@ -1,6 +1,6 @@
 import { Chess } from 'chess.js';
 
-import { getGames } from '../apis/chess.com/chess.com.api';
+import { getGames } from '../apis/chess.com';
 import GameModel, { Game, GameDocument } from '../models/game.model';
 import PlayerModel from '../models/player.model';
 
