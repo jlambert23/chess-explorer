@@ -1,8 +1,8 @@
 import { Chess } from 'chess.js';
 
 import { getGames } from '../apis/chess.com/chess.com.api';
-import GameModel, { Game, GameDocument } from '../models/data/game.model';
-import PlayerModel from '../models/data/player.model';
+import GameModel, { Game, GameDocument } from '../models/game.model';
+import PlayerModel from '../models/player.model';
 
 export async function loadGame(pgn: string) {
   const chessFullGame = new Chess();
