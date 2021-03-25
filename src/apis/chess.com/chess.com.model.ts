@@ -28,3 +28,27 @@ export interface ChessGame {
     username: string;
   };
 }
+
+export interface PgnHeaders {
+  Event?: string;
+  Site?: string;
+  Date?: string;
+  Round?: string;
+  White?: string;
+  Black?: string;
+  Result?: string;
+  CurrentPosition?: string;
+  Timezone?: string;
+  ECO?: string;
+  ECOUrl?: string;
+  UTCDate?: string;
+  UTCTime?: string;
+  WhiteElo?: string;
+  BlackElo?: string;
+  TimeControl?: string;
+  Termination?: string;
+  StartTime?: string;
+  EndDate?: string;
+  EndTime?: string;
+  Link?: string;
+}

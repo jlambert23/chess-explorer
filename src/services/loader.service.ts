@@ -1,39 +1,40 @@
 import { Chess } from 'chess.js';
 
-import { getGames } from '../apis/chess.com';
-import GameModel, { Game, GameDocument } from '../models/game.model';
+import { getGames, PgnHeaders } from '../apis/chess.com';
+import GameModel, { GameDocument } from '../models/game.model';
 import PlayerModel from '../models/player.model';
 
 export async function loadGame(pgn: string) {
   const chessFullGame = new Chess();
   const chess = new Chess();
   chessFullGame.load_pgn(pgn, { sloppy: true });
+  const headers = chessFullGame.header() as PgnHeaders;
 
+  const splitUrl = headers.Link.split('/');
+  const gameId = +splitUrl[splitUrl.length - 1];
+  const gameType = splitUrl[splitUrl.length - 2];
   const endDate = new Date(
     `${chessFullGame.header().EndDate} ${chessFullGame.header().EndTime}`
   );
-  const newGame = {
-    white: chessFullGame.header().White,
-    black: chessFullGame.header().Black,
-    date: endDate,
-    result: chessFullGame.header().Result,
-    fens: chessFullGame.history().reduce(
-      (acc, move) => {
-        chess.move(move);
-        acc.push(chess.fen());
-        return acc;
-      },
-      [chess.fen()]
-    ),
-  } as Game;
 
   return (
-    (await GameModel.findOne({
-      white: newGame.white,
-      black: newGame.black,
-      date: newGame.date,
-      result: newGame.result,
-    })) || (await GameModel.create(newGame))
+    (await GameModel.findOne({ _id: gameId })) ||
+    (await GameModel.create({
+      _id: gameId,
+      white: chessFullGame.header().White,
+      black: chessFullGame.header().Black,
+      date: endDate,
+      type: gameType,
+      result: chessFullGame.header().Result,
+      fens: chessFullGame.history().reduce(
+        (acc, move) => {
+          chess.move(move);
+          acc.push(chess.fen());
+          return acc;
+        },
+        [chess.fen()]
+      ),
+    }))
   );
 }
 
@@ -49,12 +50,13 @@ export async function loadGames(pgns: string[]) {
 export async function loadPlayerGames(playerName: string) {
   const { games } = await getGames(playerName);
   const pgns = games.map((game) => game.pgn);
+  const loadedGames = await loadGames(pgns);
 
   const player =
     (await PlayerModel.findOne({ playerName })) ||
     (await PlayerModel.create({ playerName }));
 
-  player.games = await loadGames(pgns);
+  player.games = loadedGames.map(({ _id }) => _id);
   player.save();
 
   return player;
