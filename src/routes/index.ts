@@ -1,10 +1,10 @@
-import { ErrorRequestHandler, Express, urlencoded } from 'express';
+import { ErrorRequestHandler, Express, json } from 'express';
 
 import explorerRouter from './explorer';
 import playerRouter from './player';
 
 export default function (app: Express) {
-  app.use(urlencoded({ extended: true }));
+  app.use(json());
   app.use('/explorer', explorerRouter);
   app.use('/player', playerRouter);
   app.use(errorHandler);
