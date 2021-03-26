@@ -26,13 +26,13 @@ export async function loadGame(pgn: string) {
       date: endDate,
       type: gameType,
       result: chessFullGame.header().Result,
-      fens: chessFullGame.history().reduce(
+      moves: chessFullGame.history().reduce(
         (acc, move) => {
           chess.move(move);
-          acc.push(chess.fen());
+          acc.push({ fen: chess.fen(), notation: move });
           return acc;
         },
-        [chess.fen()]
+        [{ fen: chess.fen(), notation: '' }]
       ),
     }))
   );
