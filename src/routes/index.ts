@@ -1,6 +1,6 @@
 import { ErrorRequestHandler, Express, urlencoded } from 'express';
 
-import playerRouter from './player.routes';
+import playerRouter from './player';
 
 export default function (app: Express) {
   app.use(urlencoded({ extended: true }));
