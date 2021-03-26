@@ -69,12 +69,15 @@ function getNextFenDict(fenAggregates: FenAggregate[]) {
 }
 
 function flattenFenDict(fenDict: FenDict) {
-  return Object.entries(fenDict).map<FenResult>(
-    ([fen, { whiteWon, blackWon, draw }]) => ({
+  return Object.entries(fenDict)
+    .map<FenResult>(([fen, { whiteWon, blackWon, draw }]) => ({
       fen,
       whiteWon,
       blackWon,
       draw,
-    })
-  );
+    }))
+    .sort((a, b) => {
+      const count = (x: FenResult) => x.blackWon + x.whiteWon + x.draw;
+      return count(b) - count(a);
+    });
 }
