@@ -1,3 +1,4 @@
+import { Chess } from 'chess.js';
 import GameModel from '../models/game.model';
 
 type FenDict = {
@@ -15,6 +16,11 @@ interface FenResult {
   whiteWon: number;
   blackWon: number;
   draw: number;
+}
+
+export function getAscii(fen: string) {
+  const chess = new Chess(fen);
+  return chess.ascii();
 }
 
 export async function getNextMoves(fen: string) {
