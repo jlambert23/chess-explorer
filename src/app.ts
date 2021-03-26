@@ -1,9 +1,11 @@
 import * as express from 'express';
 import { connect } from './controllers/_server';
+import routes from './routes/index';
 
 const url = 'localhost';
 const port = 3000;
 const app = express();
+routes(app);
 
 app.listen(port, async () => {
   console.log(`application listening on ${url}:${port}`);
