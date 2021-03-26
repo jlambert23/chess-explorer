@@ -11,7 +11,7 @@ interface FenAggregate {
   result: string;
 }
 
-interface FenResult {
+export interface FenResult {
   fen: string;
   whiteWon: number;
   blackWon: number;
