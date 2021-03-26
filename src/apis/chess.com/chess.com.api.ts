@@ -1,5 +1,5 @@
 import { get } from '../_https.api';
-import { ChessArchives, ChessGames } from './chess.com.model';
+import { ChessArchives, ChessGames, ChessPlayer } from './chess.com.model';
 
 const chessApiUrl = 'https://api.chess.com/pub/player';
 
@@ -49,8 +49,12 @@ export function getGamesByYearMonthPgn(
   return get<string>(`${chessApiUrl}/${player}/games/${year}/${month}/pgn`);
 }
 
+export function getPlayer(player: string) {
+  return get<ChessPlayer>(`${chessApiUrl}/${player}`);
+}
+
 async function getGameDates(player: string) {
-  const { archives } = await getArchives(player);
+  const { archives } = (await getArchives(player)) || { archives: [] };
 
   return archives.map((archive) => {
     const split = archive.split('/');

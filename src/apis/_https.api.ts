@@ -1,7 +1,7 @@
 import * as https from 'https';
 import { IncomingMessage } from 'node:http';
 
-export function get<T>(url: string) {
+export function get<T>(url: string): Promise<T> {
   return new Promise<T>((resolve, reject) => {
     https.get(url, (response) => {
       let res = '';
