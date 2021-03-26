@@ -1,3 +1,4 @@
+import { Chess } from 'chess.js';
 import GameModel from '../models/game.model';
 
 type FenDict = {
@@ -15,6 +16,11 @@ interface FenResult {
   whiteWon: number;
   blackWon: number;
   draw: number;
+}
+
+export function getAscii(fen: string) {
+  const chess = new Chess(fen);
+  return chess.ascii();
 }
 
 export async function getNextMoves(fen: string) {
@@ -63,12 +69,15 @@ function getNextFenDict(fenAggregates: FenAggregate[]) {
 }
 
 function flattenFenDict(fenDict: FenDict) {
-  return Object.entries(fenDict).map<FenResult>(
-    ([fen, { whiteWon, blackWon, draw }]) => ({
+  return Object.entries(fenDict)
+    .map<FenResult>(([fen, { whiteWon, blackWon, draw }]) => ({
       fen,
       whiteWon,
       blackWon,
       draw,
-    })
-  );
+    }))
+    .sort((a, b) => {
+      const count = (x: FenResult) => x.blackWon + x.whiteWon + x.draw;
+      return count(b) - count(a);
+    });
 }

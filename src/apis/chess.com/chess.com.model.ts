@@ -29,6 +29,21 @@ export interface ChessGame {
   };
 }
 
+export interface ChessPlayer {
+  avatar: string;
+  player_id: string;
+  '@id': string;
+  url: string;
+  name: string;
+  username: string;
+  followers: number;
+  country: string;
+  last_online: number;
+  joined: number;
+  status: string;
+  is_streamer: boolean;
+}
+
 export interface PgnHeaders {
   Event?: string;
   Site?: string;
