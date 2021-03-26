@@ -1,10 +1,13 @@
+import * as cors from 'cors';
 import * as express from 'express';
+
 import { connect } from './controllers/_server';
 import routes from './routes/index';
 
 const url = 'localhost';
 const port = 3000;
 const app = express();
+app.use(cors());
 routes(app);
 
 app.listen(port, async () => {
