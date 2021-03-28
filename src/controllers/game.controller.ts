@@ -6,10 +6,14 @@ export interface MoveAggregate {
   result: string;
 }
 
-export function aggregateMovesByFen(fen: string) {
+export function aggregateMovesByFen(
+  fen: string,
+  filter?: { playerName: string; color: 'white' | 'black' }
+) {
+  const _filter = filter ? { [filter.color]: filter.playerName } : {};
   return GameModel.aggregate<MoveAggregate>([
     {
-      $match: { 'moves.fen': fen },
+      $match: { 'moves.fen': fen, ..._filter },
     },
     {
       $project: {

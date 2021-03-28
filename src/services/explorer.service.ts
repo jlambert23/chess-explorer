@@ -15,8 +15,11 @@ export function getAscii(fen: string) {
   return chess.ascii();
 }
 
-export async function getNextMoves(fen: string) {
-  const fenAggregates = await aggregateMovesByFen(fen);
+export async function getNextMoves(
+  fen: string,
+  filter?: { playerName: string; color: 'white' | 'black' }
+) {
+  const fenAggregates = await aggregateMovesByFen(fen, filter);
 
   const fenMap = fenAggregates.reduce((acc, game) => {
     const move = game.moves[game.index + 1];
