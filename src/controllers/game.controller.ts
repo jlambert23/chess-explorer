@@ -10,7 +10,9 @@ export function aggregateMovesByFen(
   fen: string,
   filter?: { playerName: string; color: 'white' | 'black' }
 ) {
-  const _filter = filter ? { [filter.color]: filter.playerName } : {};
+  const _filter = filter
+    ? { [filter.color]: new RegExp(filter.playerName, 'i') }
+    : {};
   return GameModel.aggregate<MoveAggregate>([
     {
       $match: { 'moves.fen': fen, ..._filter },
