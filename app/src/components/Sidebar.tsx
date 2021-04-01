@@ -1,9 +1,14 @@
 import { FunctionComponent } from 'react';
 
-const Sidebar = () => (
+import { Player } from './../models/player.model';
+
+type FilterProps = { players?: Player[] };
+type SidebarProps = FilterProps;
+
+const Sidebar: FunctionComponent<SidebarProps> = ({ players }) => (
   <div className='bg-black grid grid-rows-sidebar gap-2 p-2 rounded'>
     <HeaderCard />
-    <FilterCard />
+    <FilterCard players={players} />
     <MovesCard />
     <NavCard />
   </div>
@@ -31,15 +36,15 @@ const HeaderCard = () => (
   </Card>
 );
 
-const FilterCard = () => (
+const FilterCard: FunctionComponent<FilterProps> = ({ players = [] }) => (
   <Card>
     <div className='h-full flex items-center'>
       <div className='flex'>
         <Select label='Player:'>
           <option selected>all</option>
-          <option>justuntinian</option>
-          <option>case104</option>
-          <option>rachbecrazy</option>
+          {players.map(({ _id, playerName }) => (
+            <option key={_id}>{playerName}</option>
+          ))}
         </Select>
         <Select label='Color:'>
           <option selected>white</option>
