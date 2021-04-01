@@ -1,5 +1,9 @@
-function App() {
-  return <div className='text-3xl text-purple-600 font-bold'>Hello World</div>;
-}
+import Explorer from './Explorer';
+
+const App = () => (
+  <div className='mt-10'>
+    <Explorer />
+  </div>
+);
 
 export default App;
