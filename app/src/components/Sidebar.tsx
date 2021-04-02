@@ -4,14 +4,18 @@ import { Move } from '../models/explorer.model';
 import { Player } from './../models/player.model';
 
 type FilterProps = { players?: Player[] };
-type MoveProps = { nextMoves?: Move[] };
+type MoveProps = { nextMoves?: Move[]; onMoveClick?: (move: Move) => void };
 type SidebarProps = FilterProps & MoveProps;
 
-const Sidebar: FunctionComponent<SidebarProps> = ({ players, nextMoves }) => (
+const Sidebar: FunctionComponent<SidebarProps> = ({
+  players,
+  nextMoves,
+  onMoveClick,
+}) => (
   <div className='bg-black grid grid-rows-sidebar gap-2 p-2 rounded'>
     <HeaderCard />
     <FilterCard players={players} />
-    <MovesCard nextMoves={nextMoves} />
+    <MovesCard nextMoves={nextMoves} onMoveClick={onMoveClick} />
     <NavCard />
   </div>
 );
@@ -57,14 +61,20 @@ const FilterCard: FunctionComponent<FilterProps> = ({ players = [] }) => (
   </Card>
 );
 
-const MovesCard: FunctionComponent<MoveProps> = ({ nextMoves = [] }) => (
+const MovesCard: FunctionComponent<MoveProps> = ({
+  nextMoves = [],
+  onMoveClick = () => null,
+}) => (
   <Card>
     <div className='grid gap-2'>
       <div className='border-b-2'>1. e4 e5 2. Nf3 Nc6</div>
       <div>
         {nextMoves.map((move) => (
           <div key={move.move._id} className='grid grid-cols-2'>
-            <div className='hover:text-blue-500 cursor-pointer'>
+            <div
+              className='hover:text-blue-500 cursor-pointer'
+              onClick={() => onMoveClick(move)}
+            >
               1. {move.move.notation}
             </div>
             <div>

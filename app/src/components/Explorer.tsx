@@ -21,7 +21,11 @@ const Explorer = () => {
   return (
     <div className='flex justify-center gap-10'>
       <Chessboard />
-      <Sidebar players={players} nextMoves={explorer?.nextMoves} />
+      <Sidebar
+        players={players}
+        nextMoves={explorer?.nextMoves}
+        onMoveClick={(move) => console.log(move)}
+      />
     </div>
   );
 };
