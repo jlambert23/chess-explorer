@@ -4,7 +4,11 @@ import { Move } from '../models/explorer.model';
 import { Player } from './../models/player.model';
 
 type FilterProps = { players?: Player[] };
-type MoveProps = { nextMoves?: Move[]; onMoveClick?: (move: Move) => void };
+type MoveProps = {
+  moves?: Move[];
+  nextMoves?: Move[];
+  onMoveClick?: (move: Move) => void;
+};
 type SidebarProps = FilterProps & MoveProps;
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -14,13 +18,14 @@ type SelectProps = {
 
 const Sidebar: React.FunctionComponent<SidebarProps> = ({
   players,
+  moves,
   nextMoves,
   onMoveClick,
 }) => (
-  <div className='bg-black grid grid-rows-sidebar gap-2 p-2 rounded'>
+  <div className='bg-black grid grid-rows-sidebar gap-2 p-2 rounded w-96'>
     <HeaderCard />
     <FilterCard players={players} />
-    <MovesCard nextMoves={nextMoves} onMoveClick={onMoveClick} />
+    <MovesCard moves={moves} nextMoves={nextMoves} onMoveClick={onMoveClick} />
     <NavCard />
   </div>
 );
@@ -78,21 +83,44 @@ const FilterCard: React.FunctionComponent<FilterProps> = ({ players = [] }) => (
 );
 
 const MovesCard: React.FunctionComponent<MoveProps> = ({
+  moves = [],
   nextMoves = [],
   onMoveClick = () => null,
 }) => (
   <Card>
     <div className='grid gap-2'>
-      <div className='border-b-2'>1. e4 e5 2. Nf3 Nc6</div>
+      <div className='border-b-2 flex flex-wrap text-sm pb-1'>
+        {moves.map((move, i) => {
+          const moveNo = i % 2 ? '' : `${Math.ceil(i / 2) + 1}.`;
+          const current = i === moves.length - 1;
+          return (
+            <div
+              key={move.move._id}
+              className={`inline ${current ? '' : 'text-gray-600'}`}
+            >
+              {moveNo}
+              <button
+                className={`inline font-medium px-1 rounded-sm focus:outline-none hover:bg-gray-300 ${
+                  current ? 'bg-gray-200' : ''
+                }`}
+              >
+                {move.move.notation}
+              </button>
+            </div>
+          );
+        })}
+      </div>
       <div>
         {nextMoves.map((move) => (
           <div key={move.move._id} className='grid grid-cols-2'>
-            <div
-              className='hover:text-blue-500 cursor-pointer'
+            <button
+              className='text-left focus:outline-none hover:text-blue-500'
               onClick={() => onMoveClick(move)}
             >
-              1. {move.move.notation}
-            </div>
+              {Math.floor(moves.length / 2) + 1}.{' '}
+              {moves.length % 2 ? '...' : ''}
+              {move.move.notation}
+            </button>
             <div>
               ({move.whiteWon}/{move.blackWon}/{move.draw})
             </div>
