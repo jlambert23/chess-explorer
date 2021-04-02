@@ -1,8 +1,8 @@
 export interface ExplorerData {
-  ascii: string;
+  ascii?: string;
   color: 'white' | 'black';
   fen: string;
-  nextMoves: Move[];
+  nextMoves?: Move[];
   source: 'all' | string;
 }
 
