@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import React from 'react';
 
 import { Move } from '../models/explorer.model';
 import { Player } from './../models/player.model';
@@ -7,7 +7,12 @@ type FilterProps = { players?: Player[] };
 type MoveProps = { nextMoves?: Move[]; onMoveClick?: (move: Move) => void };
 type SidebarProps = FilterProps & MoveProps;
 
-const Sidebar: FunctionComponent<SidebarProps> = ({
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+type SelectProps = {
+  label?: string;
+} & React.SelectHTMLAttributes<HTMLSelectElement>;
+
+const Sidebar: React.FunctionComponent<SidebarProps> = ({
   players,
   nextMoves,
   onMoveClick,
@@ -21,18 +26,29 @@ const Sidebar: FunctionComponent<SidebarProps> = ({
 );
 export default Sidebar;
 
-const Button: FunctionComponent = ({ children }) => (
-  <button className='w-full border-2 rounded'>{children}</button>
+const Button: React.FunctionComponent<ButtonProps> = ({
+  children,
+  ...buttonAttributes
+}) => (
+  <button className='w-full border-2 rounded' {...buttonAttributes}>
+    {children}
+  </button>
 );
 
-const Select: FunctionComponent<{ label?: string }> = ({ children, label }) => (
+const Select: React.FunctionComponent<SelectProps> = ({
+  children,
+  label,
+  ...selectAttributes
+}) => (
   <div className='flex'>
     {label ? <label className='font-bold'>{label}</label> : ''}
-    <select className='border mx-2'>{children}</select>
+    <select className='border mx-2' {...selectAttributes}>
+      {children}
+    </select>
   </div>
 );
 
-const Card: FunctionComponent = ({ children }) => (
+const Card: React.FunctionComponent = ({ children }) => (
   <div className='bg-white rounded p-2'>{children}</div>
 );
 
@@ -42,18 +58,18 @@ const HeaderCard = () => (
   </Card>
 );
 
-const FilterCard: FunctionComponent<FilterProps> = ({ players = [] }) => (
+const FilterCard: React.FunctionComponent<FilterProps> = ({ players = [] }) => (
   <Card>
     <div className='h-full flex items-center'>
       <div className='flex'>
-        <Select label='Player:'>
-          <option selected>all</option>
+        <Select label='Player:' defaultValue='all'>
+          <option>all</option>
           {players.map(({ _id, playerName }) => (
             <option key={_id}>{playerName}</option>
           ))}
         </Select>
-        <Select label='Color:'>
-          <option selected>white</option>
+        <Select label='Color:' defaultValue='white'>
+          <option>white</option>
           <option>black</option>
         </Select>
       </div>
@@ -61,7 +77,7 @@ const FilterCard: FunctionComponent<FilterProps> = ({ players = [] }) => (
   </Card>
 );
 
-const MovesCard: FunctionComponent<MoveProps> = ({
+const MovesCard: React.FunctionComponent<MoveProps> = ({
   nextMoves = [],
   onMoveClick = () => null,
 }) => (
