@@ -7,7 +7,7 @@ type FilterProps = { players?: Player[] };
 type MoveProps = {
   moves?: Move[];
   nextMoves?: Move[];
-  onMoveClick?: (move: Move) => void;
+  onMoveClick?: (move: Move, index?: number) => void;
 };
 type SidebarProps = FilterProps & MoveProps;
 
@@ -103,6 +103,7 @@ const MovesCard: React.FunctionComponent<MoveProps> = ({
                 className={`inline font-medium px-1 rounded-sm focus:outline-none hover:bg-gray-300 ${
                   current ? 'bg-gray-200' : ''
                 }`}
+                onClick={() => onMoveClick(move, i)}
               >
                 {move.move.notation}
               </button>
