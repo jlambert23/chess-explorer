@@ -5,8 +5,8 @@ import { useExplorer } from '../apis/explorer.api';
 import { Player } from '../models/player.model';
 
 const Explorer = () => {
-  const { data: players } = useFetch<Player[]>('player');
   const [explorer, setExplorer] = useExplorer();
+  const { data: players } = useFetch<Player[]>('player');
 
   return (
     <div className='flex justify-center gap-10'>
