@@ -6,10 +6,8 @@ export const validateExplorerBody: RequestHandler = async (req, res, next) => {
     return res.status(400).send('missing post body\n');
   }
   const { fen, color, source } = req.body;
-  if (!fen) {
-    return res
-      .status(400)
-      .send("missing required field 'fen' in the post body\n");
+  if (!fen || fen === 'start') {
+    req.body.fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
   }
   if (color !== 'white' && color !== 'black') {
     req.body.color = 'white';

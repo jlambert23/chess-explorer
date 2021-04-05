@@ -5,7 +5,7 @@ import { connect } from './controllers/_server';
 import routes from './routes/index';
 
 const url = 'localhost';
-const port = 3000;
+const port = 3001;
 const app = express();
 app.use(cors());
 routes(app);
