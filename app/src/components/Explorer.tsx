@@ -13,7 +13,7 @@ const Explorer = () => {
   const { data: players } = useFetch<Player[]>('player');
 
   return (
-    <div className='flex justify-center gap-10'>
+    <div className='flex justify-center gap-10 h-screen-90'>
       <Chessboard position={explorer?.fen} />
       <Sidebar
         players={players}

@@ -75,7 +75,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 );
 
 const Card: React.FunctionComponent = ({ children }) => (
-  <div className='bg-white rounded p-2'>{children}</div>
+  <div className='bg-white rounded overflow-hidden p-2'>{children}</div>
 );
 
 const HeaderCard = () => (
@@ -136,7 +136,7 @@ const MovesCard: React.FunctionComponent<MoveProps> = ({
   updateMoves,
 }) => (
   <Card>
-    <div className='grid gap-2'>
+    <div className='flex flex-col h-full'>
       <div className='border-b-2 flex flex-wrap text-sm pb-1'>
         {moves.map((move, i) => {
           const moveNo = i % 2 ? '' : `${Math.ceil(i / 2) + 1}.`;
@@ -166,9 +166,9 @@ const MovesCard: React.FunctionComponent<MoveProps> = ({
           );
         })}
       </div>
-      <div>
-        {explorer.nextMoves?.map((move) => (
-          <div key={move.move._id} className='grid grid-cols-2'>
+      <div className='overflow-auto'>
+        {explorer.nextMoves?.map((move, i) => (
+          <div key={move.move._id + i} className='grid grid-cols-2'>
             <button
               className='text-left focus:outline-none hover:text-blue-500'
               onClick={() =>
