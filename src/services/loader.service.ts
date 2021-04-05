@@ -56,6 +56,7 @@ export async function loadPlayerGames(playerName: string) {
     (await PlayerModel.findOne({ playerName })) ||
     (await PlayerModel.create({ playerName }));
 
+  player.lastUpdated = new Date();
   player.games = loadedGames.map(({ _id }) => _id);
   player.save();
 
