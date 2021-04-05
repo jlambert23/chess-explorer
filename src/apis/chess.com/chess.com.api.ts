@@ -7,8 +7,8 @@ export function getArchives(player: string): Promise<ChessArchives> {
   return get<ChessArchives>(`${chessApiUrl}/${player}/games/archives`);
 }
 
-export async function getGames(player: string) {
-  const dates = await getGameDates(player);
+export async function getGames(player: string, lastUpdated?: Date) {
+  const dates = await getGameDates(player, lastUpdated);
 
   const chessGame = dates.reduce(async (acc, { year, month }) => {
     const accumulator = await acc;
@@ -53,13 +53,23 @@ export function getPlayer(player: string) {
   return get<ChessPlayer>(`${chessApiUrl}/${player}`);
 }
 
-async function getGameDates(player: string) {
+async function getGameDates(player: string, lastUpdated?: Date) {
   const { archives } = (await getArchives(player)) || { archives: [] };
 
-  return archives.map((archive) => {
+  let dates = archives.map((archive) => {
     const split = archive.split('/');
     const year = split[split.length - 2];
     const month = split[split.length - 1];
     return { year, month };
   });
+
+  if (lastUpdated) {
+    lastUpdated.setDate(0);
+    dates = dates.filter(
+      ({ year, month }) => new Date(`${month}/01/${year}`) > lastUpdated
+    );
+    console.log(dates);
+  }
+
+  return dates;
 }

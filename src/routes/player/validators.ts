@@ -9,7 +9,7 @@ export const validateCreate: RequestHandler = async (req, res, next) => {
     return res.status(400).send('playerName required in request body.\n');
   }
   if (await playerExists(playerName)) {
-    const message = `Player ${playerName} already exists. Call player/${playerName}/refresh-games to update games.\n`;
+    const message = `Player ${playerName} already exists. POST to player/${playerName}/refresh to update games.\n`;
     return res.status(400).send(message);
   }
   if (!(await getPlayer(playerName))) {

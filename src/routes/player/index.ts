@@ -28,4 +28,10 @@ playerRouter.route('/:playerName').get(async (req, res) => {
   res.send(player);
 });
 
+playerRouter.route('/:playerName/refresh').post(async (req, res) => {
+  const playerName = req.params.playerName;
+  const player = await loadPlayerGames(playerName);
+  res.send(player);
+});
+
 export default playerRouter;
