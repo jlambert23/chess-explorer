@@ -1,7 +1,7 @@
 export interface ExplorerData {
   ascii?: string;
   color: 'white' | 'black';
-  fen: string;
+  fen: 'start' | string;
   nextMoves?: Move[];
   source: 'all' | string;
 }

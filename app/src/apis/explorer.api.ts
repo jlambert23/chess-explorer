@@ -11,12 +11,7 @@ export const useExplorer = (): [
 
   useEffect(() => {
     async function init() {
-      const initExplorer: ExplorerData = {
-        fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-        color: 'white',
-        source: 'all',
-      };
-      const res = await poster<ExplorerData>('explorer', initExplorer);
+      const res = await poster<ExplorerData>('explorer', { fen: 'start' });
       _setExplorer(res);
     }
     init();

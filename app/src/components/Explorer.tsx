@@ -21,7 +21,7 @@ const Explorer = () => {
         nextMoves={explorer?.nextMoves}
         onMoveClick={async (move, index) => {
           if (explorer) {
-            await setExplorer({ ...explorer, fen: move.move.fen });
+            await setExplorer({ ...explorer, fen: move?.move.fen || 'start' });
             if (index != null) {
               setMoves(moves.slice(0, index + 1));
             } else {

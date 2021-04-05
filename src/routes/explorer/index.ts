@@ -10,7 +10,7 @@ import {
 const explorerRouter = Router();
 
 interface Explorer {
-  fen: string;
+  fen: 'start' | string;
   color: 'white' | 'black';
   source: 'all' | string;
   ascii?: string;
