@@ -19,14 +19,11 @@ const Explorer = () => {
         players={players}
         moves={moves}
         nextMoves={explorer?.nextMoves}
-        onMoveClick={async (move, index) => {
+        updateMoves={async (updated) => {
           if (explorer) {
+            const move = updated[updated.length - 1];
             await setExplorer({ ...explorer, fen: move?.move.fen || 'start' });
-            if (index != null) {
-              setMoves(moves.slice(0, index + 1));
-            } else {
-              setMoves([...moves, move]);
-            }
+            setMoves(updated);
           }
         }}
       />

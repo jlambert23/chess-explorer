@@ -7,9 +7,10 @@ type FilterProps = { players?: Player[] };
 type MoveProps = {
   moves?: Move[];
   nextMoves?: Move[];
-  onMoveClick?: (move: Move, index?: number) => void;
+  updateMoves?: (updated: Move[]) => void;
 };
-type SidebarProps = FilterProps & MoveProps;
+type NavProps = MoveProps;
+type SidebarProps = FilterProps & MoveProps & NavProps;
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 type SelectProps = {
@@ -20,13 +21,13 @@ const Sidebar: React.FunctionComponent<SidebarProps> = ({
   players,
   moves,
   nextMoves,
-  onMoveClick,
+  updateMoves: onMoveClick,
 }) => (
   <div className='bg-black grid grid-rows-sidebar gap-2 p-2 rounded w-96'>
     <HeaderCard />
     <FilterCard players={players} />
-    <MovesCard moves={moves} nextMoves={nextMoves} onMoveClick={onMoveClick} />
-    <NavCard />
+    <MovesCard moves={moves} nextMoves={nextMoves} updateMoves={onMoveClick} />
+    <NavCard moves={moves} nextMoves={nextMoves} updateMoves={onMoveClick} />
   </div>
 );
 export default Sidebar;
@@ -85,7 +86,7 @@ const FilterCard: React.FunctionComponent<FilterProps> = ({ players = [] }) => (
 const MovesCard: React.FunctionComponent<MoveProps> = ({
   moves = [],
   nextMoves = [],
-  onMoveClick = () => null,
+  updateMoves: onMoveClick = () => null,
 }) => (
   <Card>
     <div className='grid gap-2'>
@@ -103,7 +104,7 @@ const MovesCard: React.FunctionComponent<MoveProps> = ({
                 className={`inline font-medium px-1 rounded-sm focus:outline-none hover:bg-gray-300 ${
                   current ? 'bg-gray-200' : ''
                 }`}
-                onClick={() => onMoveClick(move, i)}
+                onClick={() => onMoveClick(moves.slice(0, i + 1))}
               >
                 {move.move.notation}
               </button>
@@ -116,7 +117,7 @@ const MovesCard: React.FunctionComponent<MoveProps> = ({
           <div key={move.move._id} className='grid grid-cols-2'>
             <button
               className='text-left focus:outline-none hover:text-blue-500'
-              onClick={() => onMoveClick(move)}
+              onClick={() => onMoveClick([...moves, move])}
             >
               {Math.floor(moves.length / 2) + 1}.{' '}
               {moves.length % 2 ? '...' : ''}
@@ -132,12 +133,22 @@ const MovesCard: React.FunctionComponent<MoveProps> = ({
   </Card>
 );
 
-const NavCard = () => (
+const NavCard: React.FunctionComponent<NavProps> = ({
+  moves = [],
+  nextMoves = [],
+  updateMoves: onMoveClick = () => null,
+}) => (
   <Card>
     <div className='flex w-full h-full gap-2'>
-      <Button>{'<'}</Button>
-      <Button>Reset</Button>
-      <Button>{'>'}</Button>
+      <Button
+        onClick={() => (moves.length ? onMoveClick(moves.slice(0, -1)) : null)}
+      >
+        {'<'}
+      </Button>
+      <Button onClick={() => onMoveClick([])}>Reset</Button>
+      <Button onClick={() => onMoveClick([...moves, nextMoves[0]])}>
+        {'>'}
+      </Button>
     </div>
   </Card>
 );
