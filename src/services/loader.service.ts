@@ -48,14 +48,15 @@ export async function loadGames(pgns: string[]) {
 }
 
 export async function loadPlayerGames(playerName: string) {
-  const { games } = await getGames(playerName);
-  const pgns = games.map((game) => game.pgn);
-  const loadedGames = await loadGames(pgns);
-
   const player =
     (await PlayerModel.findOne({ playerName })) ||
     (await PlayerModel.create({ playerName }));
 
+  const { games } = await getGames(playerName, player.lastUpdated);
+  const pgns = games.map((game) => game.pgn);
+  const loadedGames = await loadGames(pgns);
+
+  player.lastUpdated = new Date();
   player.games = loadedGames.map(({ _id }) => _id);
   player.save();
 
