@@ -17,15 +17,10 @@ const Explorer = () => {
       <Chessboard position={explorer?.fen} />
       <Sidebar
         players={players}
+        explorer={explorer}
         moves={moves}
-        nextMoves={explorer?.nextMoves}
-        updateMoves={async (updated) => {
-          if (explorer) {
-            const move = updated[updated.length - 1];
-            await setExplorer({ ...explorer, fen: move?.move.fen || 'start' });
-            setMoves(updated);
-          }
-        }}
+        updateExplorer={setExplorer}
+        updateMoves={setMoves}
       />
     </div>
   );

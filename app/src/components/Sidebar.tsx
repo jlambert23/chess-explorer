@@ -1,13 +1,15 @@
 import React from 'react';
 
 import { Move } from '../models/explorer.model';
+import { ExplorerData } from './../models/explorer.model';
 import { Player } from './../models/player.model';
 
 type FilterProps = { players?: Player[] };
 type MoveProps = {
+  explorer: ExplorerData;
   moves?: Move[];
-  nextMoves?: Move[];
-  updateMoves?: (updated: Move[]) => void;
+  updateExplorer: (explorer: ExplorerData) => Promise<void>;
+  updateMoves: (moves: Move[]) => void;
 };
 type NavProps = MoveProps;
 type SidebarProps = FilterProps & MoveProps & NavProps;
@@ -19,15 +21,26 @@ type SelectProps = {
 
 const Sidebar: React.FunctionComponent<SidebarProps> = ({
   players,
+  explorer,
   moves,
-  nextMoves,
-  updateMoves: onMoveClick,
+  updateExplorer,
+  updateMoves,
 }) => (
   <div className='bg-black grid grid-rows-sidebar gap-2 p-2 rounded w-96'>
     <HeaderCard />
     <FilterCard players={players} />
-    <MovesCard moves={moves} nextMoves={nextMoves} updateMoves={onMoveClick} />
-    <NavCard moves={moves} nextMoves={nextMoves} updateMoves={onMoveClick} />
+    <MovesCard
+      moves={moves}
+      explorer={explorer}
+      updateExplorer={updateExplorer}
+      updateMoves={updateMoves}
+    />
+    <NavCard
+      moves={moves}
+      explorer={explorer}
+      updateExplorer={updateExplorer}
+      updateMoves={updateMoves}
+    />
   </div>
 );
 export default Sidebar;
@@ -84,9 +97,10 @@ const FilterCard: React.FunctionComponent<FilterProps> = ({ players = [] }) => (
 );
 
 const MovesCard: React.FunctionComponent<MoveProps> = ({
+  explorer,
   moves = [],
-  nextMoves = [],
-  updateMoves: onMoveClick = () => null,
+  updateExplorer,
+  updateMoves,
 }) => (
   <Card>
     <div className='grid gap-2'>
@@ -104,7 +118,14 @@ const MovesCard: React.FunctionComponent<MoveProps> = ({
                 className={`inline font-medium px-1 rounded-sm focus:outline-none hover:bg-gray-300 ${
                   current ? 'bg-gray-200' : ''
                 }`}
-                onClick={() => onMoveClick(moves.slice(0, i + 1))}
+                onClick={() =>
+                  updateExplorerMoves(
+                    updateExplorer,
+                    updateMoves,
+                    explorer,
+                    moves.slice(0, i + 1)
+                  )
+                }
               >
                 {move.move.notation}
               </button>
@@ -113,11 +134,16 @@ const MovesCard: React.FunctionComponent<MoveProps> = ({
         })}
       </div>
       <div>
-        {nextMoves.map((move) => (
+        {explorer.nextMoves?.map((move) => (
           <div key={move.move._id} className='grid grid-cols-2'>
             <button
               className='text-left focus:outline-none hover:text-blue-500'
-              onClick={() => onMoveClick([...moves, move])}
+              onClick={() =>
+                updateExplorerMoves(updateExplorer, updateMoves, explorer, [
+                  ...moves,
+                  move,
+                ])
+              }
             >
               {Math.floor(moves.length / 2) + 1}.{' '}
               {moves.length % 2 ? '...' : ''}
@@ -134,21 +160,58 @@ const MovesCard: React.FunctionComponent<MoveProps> = ({
 );
 
 const NavCard: React.FunctionComponent<NavProps> = ({
+  explorer,
   moves = [],
-  nextMoves = [],
-  updateMoves: onMoveClick = () => null,
+  updateExplorer,
+  updateMoves,
 }) => (
   <Card>
     <div className='flex w-full h-full gap-2'>
       <Button
-        onClick={() => (moves.length ? onMoveClick(moves.slice(0, -1)) : null)}
+        onClick={() => {
+          if (moves.length) {
+            updateExplorerMoves(
+              updateExplorer,
+              updateMoves,
+              explorer,
+              moves.slice(0, -1)
+            );
+          }
+        }}
       >
         {'<'}
       </Button>
-      <Button onClick={() => onMoveClick([])}>Reset</Button>
-      <Button onClick={() => onMoveClick([...moves, nextMoves[0]])}>
+      <Button
+        onClick={() =>
+          updateExplorerMoves(updateExplorer, updateMoves, explorer, [])
+        }
+      >
+        Reset
+      </Button>
+      <Button
+        onClick={() => {
+          if (explorer.nextMoves?.length) {
+            const move = explorer.nextMoves[0];
+            updateExplorerMoves(updateExplorer, updateMoves, explorer, [
+              ...moves,
+              move,
+            ]);
+          }
+        }}
+      >
         {'>'}
       </Button>
     </div>
   </Card>
 );
+
+const updateExplorerMoves = async (
+  updateExplorer: (explorer: ExplorerData) => Promise<void>,
+  updateMoves: (moves: Move[]) => void,
+  explorer: ExplorerData,
+  updatedMoves: Move[]
+) => {
+  const move = updatedMoves[updatedMoves.length - 1];
+  await updateExplorer({ ...explorer, fen: move?.move.fen || 'start' });
+  updateMoves(updatedMoves);
+};
