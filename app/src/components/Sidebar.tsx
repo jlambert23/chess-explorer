@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Move } from '../models/explorer.model';
 import { ExplorerData } from './../models/explorer.model';
@@ -87,34 +87,49 @@ const HeaderCard = () => (
 const FilterCard: React.FunctionComponent<FilterProps> = ({
   players = [],
   filter = () => null,
-}) => (
-  <Card>
-    <div className='h-full flex items-center'>
-      <div className='flex'>
-        <Select
-          label='Player:'
-          defaultValue='all'
-          onChange={({ target }) => filter({ playerName: target.value })}
-        >
-          <option>all</option>
-          {players.map(({ _id, playerName }) => (
-            <option key={_id}>{playerName}</option>
-          ))}
-        </Select>
-        <Select
-          label='Color:'
-          defaultValue='white'
-          onChange={({ target }) =>
-            filter({ color: target.value as 'white' | 'black' })
-          }
-        >
-          <option>white</option>
-          <option>black</option>
-        </Select>
+}) => {
+  const [{ playerName, color }, setOptions] = useState({
+    playerName: 'all',
+    color: 'white',
+  });
+
+  return (
+    <Card>
+      <div className='h-full flex items-center'>
+        <div className='flex'>
+          <Select
+            label='Player:'
+            defaultValue={playerName}
+            onChange={({ target: { value } }) => {
+              setOptions({ playerName: value, color });
+              filter({ playerName: value });
+            }}
+          >
+            <option>all</option>
+            {players.map(({ _id, playerName }) => (
+              <option key={_id}>{playerName}</option>
+            ))}
+          </Select>
+          {playerName === 'all' ? null : (
+            <Select
+              label='Color:'
+              defaultValue={color}
+              onChange={({ target: { value } }) => {
+                if (value === 'white' || value === 'black') {
+                  setOptions({ playerName, color: value });
+                  filter({ color: value });
+                }
+              }}
+            >
+              <option>white</option>
+              <option>black</option>
+            </Select>
+          )}
+        </div>
       </div>
-    </div>
-  </Card>
-);
+    </Card>
+  );
+};
 
 const MovesCard: React.FunctionComponent<MoveProps> = ({
   explorer,
