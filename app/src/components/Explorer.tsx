@@ -17,6 +17,11 @@ const Explorer = () => {
       <Chessboard position={explorer?.fen} />
       <Sidebar
         players={players}
+        filter={({ playerName, color }) => {
+          explorer.source = playerName || explorer.source;
+          explorer.color = color || explorer.color;
+          setExplorer(explorer);
+        }}
         explorer={explorer}
         moves={moves}
         updateExplorer={setExplorer}

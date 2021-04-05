@@ -4,7 +4,13 @@ import { Move } from '../models/explorer.model';
 import { ExplorerData } from './../models/explorer.model';
 import { Player } from './../models/player.model';
 
-type FilterProps = { players?: Player[] };
+type FilterProps = {
+  players?: Player[];
+  filter?: (options: {
+    playerName?: string;
+    color?: 'white' | 'black';
+  }) => void;
+};
 type MoveProps = {
   explorer: ExplorerData;
   moves?: Move[];
@@ -21,6 +27,7 @@ type SelectProps = {
 
 const Sidebar: React.FunctionComponent<SidebarProps> = ({
   players,
+  filter,
   explorer,
   moves,
   updateExplorer,
@@ -28,7 +35,7 @@ const Sidebar: React.FunctionComponent<SidebarProps> = ({
 }) => (
   <div className='bg-black grid grid-rows-sidebar gap-2 p-2 rounded w-96'>
     <HeaderCard />
-    <FilterCard players={players} />
+    <FilterCard players={players} filter={filter} />
     <MovesCard
       moves={moves}
       explorer={explorer}
@@ -77,17 +84,30 @@ const HeaderCard = () => (
   </Card>
 );
 
-const FilterCard: React.FunctionComponent<FilterProps> = ({ players = [] }) => (
+const FilterCard: React.FunctionComponent<FilterProps> = ({
+  players = [],
+  filter = () => null,
+}) => (
   <Card>
     <div className='h-full flex items-center'>
       <div className='flex'>
-        <Select label='Player:' defaultValue='all'>
+        <Select
+          label='Player:'
+          defaultValue='all'
+          onChange={({ target }) => filter({ playerName: target.value })}
+        >
           <option>all</option>
           {players.map(({ _id, playerName }) => (
             <option key={_id}>{playerName}</option>
           ))}
         </Select>
-        <Select label='Color:' defaultValue='white'>
+        <Select
+          label='Color:'
+          defaultValue='white'
+          onChange={({ target }) =>
+            filter({ color: target.value as 'white' | 'black' })
+          }
+        >
           <option>white</option>
           <option>black</option>
         </Select>
