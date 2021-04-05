@@ -66,9 +66,9 @@ const Select: React.FunctionComponent<SelectProps> = ({
   label,
   ...selectAttributes
 }) => (
-  <div className='flex'>
+  <div className='flex w-full'>
     {label ? <label className='font-bold'>{label}</label> : ''}
-    <select className='border mx-2' {...selectAttributes}>
+    <select className='rounded border mx-2 w-full pl-0.5' {...selectAttributes}>
       {children}
     </select>
   </div>
@@ -95,37 +95,35 @@ const FilterCard: React.FunctionComponent<FilterProps> = ({
 
   return (
     <Card>
-      <div className='h-full flex items-center'>
-        <div className='flex'>
+      <div className='h-full grid grid-cols-2 place-items-center'>
+        <Select
+          label='Player:'
+          defaultValue={playerName}
+          onChange={({ target: { value } }) => {
+            setOptions({ playerName: value, color });
+            filter({ playerName: value });
+          }}
+        >
+          <option>all</option>
+          {players.map(({ _id, playerName }) => (
+            <option key={_id}>{playerName}</option>
+          ))}
+        </Select>
+        {playerName === 'all' ? null : (
           <Select
-            label='Player:'
-            defaultValue={playerName}
+            label='Color:'
+            defaultValue={color}
             onChange={({ target: { value } }) => {
-              setOptions({ playerName: value, color });
-              filter({ playerName: value });
+              if (value === 'white' || value === 'black') {
+                setOptions({ playerName, color: value });
+                filter({ color: value });
+              }
             }}
           >
-            <option>all</option>
-            {players.map(({ _id, playerName }) => (
-              <option key={_id}>{playerName}</option>
-            ))}
+            <option>white</option>
+            <option>black</option>
           </Select>
-          {playerName === 'all' ? null : (
-            <Select
-              label='Color:'
-              defaultValue={color}
-              onChange={({ target: { value } }) => {
-                if (value === 'white' || value === 'black') {
-                  setOptions({ playerName, color: value });
-                  filter({ color: value });
-                }
-              }}
-            >
-              <option>white</option>
-              <option>black</option>
-            </Select>
-          )}
-        </div>
+        )}
       </div>
     </Card>
   );
