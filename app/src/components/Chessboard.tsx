@@ -1,18 +1,11 @@
-import Chessboardjsx, { Position } from 'chessboardjsx';
+import Chessground from 'react-chessground';
+import 'react-chessground/dist/styles/chessground.css';
 
-const BOARD_SIZE = 0.9;
+const BOARD_SIZE = '90vh';
 
-const Chessboard = ({
-  position = 'start',
-}: {
-  position?: string | Position;
-}) => (
+const Chessboard = ({ position = 'start' }: { position?: string }) => (
   <div>
-    <Chessboardjsx
-      calcWidth={(obj) => obj.screenHeight * BOARD_SIZE}
-      draggable={false}
-      position={position}
-    />
+    <Chessground width={BOARD_SIZE} height={BOARD_SIZE} fen={position} />
   </div>
 );
 export default Chessboard;
