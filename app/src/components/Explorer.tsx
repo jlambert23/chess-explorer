@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Key } from 'react-chessground';
 
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar/Sidebar';
 import Chessboard from './Chessboard';
 import { useFetch } from '../apis';
 import { useExplorer } from '../apis/explorer.api';
@@ -13,12 +12,18 @@ const Explorer = () => {
   const [moves, setMoves] = useState<Move[]>([]);
   const { data: players } = useFetch<Player[]>('player');
 
-  function getLastMove(): Key[] {
+  const getLastMove = () => {
     const last = moves[moves.length - 1];
     return last?.move.from && last?.move.to
       ? [last.move.from, last.move.to]
       : [];
-  }
+  };
+
+  const updateMoves = async (updatedMoves: Move[]) => {
+    const move = updatedMoves[updatedMoves.length - 1];
+    await setExplorer({ ...explorer, fen: move?.move.fen || 'start' });
+    setMoves(updatedMoves);
+  };
 
   return (
     <div className='flex justify-center gap-10 h-screen-90'>
@@ -32,8 +37,7 @@ const Explorer = () => {
         }}
         explorer={explorer}
         moves={moves}
-        updateExplorer={setExplorer}
-        updateMoves={setMoves}
+        updateMoves={updateMoves}
       />
     </div>
   );
