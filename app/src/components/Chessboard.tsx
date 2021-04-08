@@ -1,14 +1,21 @@
-import Chessground, { Key } from 'react-chessground';
+import Chessground, { DrawShape, Key } from 'react-chessground';
 import 'react-chessground/dist/styles/chessground.css';
+
+import { Move } from '../models/explorer.model';
 
 const BOARD_SIZE = '90vh';
 
 interface ChessboardProps {
   position?: string;
+  hover?: Move | null;
   lastMove?: Key[];
 }
 
-const Chessboard = ({ position = 'start', lastMove = [] }: ChessboardProps) => (
+const Chessboard = ({
+  position = 'start',
+  hover,
+  lastMove = [],
+}: ChessboardProps) => (
   <div>
     <Chessground
       width={BOARD_SIZE}
@@ -16,6 +23,17 @@ const Chessboard = ({ position = 'start', lastMove = [] }: ChessboardProps) => (
       fen={position}
       selected={''}
       lastMove={lastMove}
+      drawable={{
+        autoShapes: hover?.move
+          ? [
+              {
+                brush: 'green',
+                dest: hover.move.to,
+                orig: hover.move.from,
+              } as DrawShape,
+            ]
+          : [],
+      }}
     />
   </div>
 );

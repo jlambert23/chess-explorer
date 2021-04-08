@@ -10,6 +10,7 @@ import { Player } from '../models/player.model';
 const Explorer = () => {
   const [explorer, setExplorer] = useExplorer();
   const [moves, setMoves] = useState<Move[]>([]);
+  const [hover, setHover] = useState<Move | null>();
   const { data: players } = useFetch<Player[]>('player');
 
   const getLastMove = () => {
@@ -23,11 +24,16 @@ const Explorer = () => {
     const move = updatedMoves[updatedMoves.length - 1];
     await setExplorer({ ...explorer, fen: move?.move.fen || 'start' });
     setMoves(updatedMoves);
+    setHover(null);
   };
 
   return (
     <div className='flex justify-center gap-10 h-screen-90'>
-      <Chessboard position={explorer?.fen} lastMove={getLastMove()} />
+      <Chessboard
+        position={explorer?.fen}
+        hover={hover}
+        lastMove={getLastMove()}
+      />
       <Sidebar
         players={players}
         filter={({ playerName, color }) => {
@@ -37,6 +43,7 @@ const Explorer = () => {
         }}
         explorer={explorer}
         moves={moves}
+        updateHover={setHover}
         updateMoves={updateMoves}
       />
     </div>

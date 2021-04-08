@@ -12,6 +12,7 @@ const Sidebar: React.FunctionComponent<SidebarProps> = ({
   filter,
   explorer,
   moves,
+  updateHover,
   updateMoves,
 }) => (
   <div className='bg-black grid grid-rows-sidebar gap-2 p-2 rounded w-96'>
@@ -19,7 +20,12 @@ const Sidebar: React.FunctionComponent<SidebarProps> = ({
       <div className='font-bold text-3xl text-center'>Explorer</div>
     </Card>
     <FilterCard players={players} filter={filter} />
-    <MovesCard moves={moves} explorer={explorer} updateMoves={updateMoves} />
+    <MovesCard
+      moves={moves}
+      explorer={explorer}
+      updateHover={updateHover}
+      updateMoves={updateMoves}
+    />
     <NavCard moves={moves} explorer={explorer} updateMoves={updateMoves} />
   </div>
 );

@@ -6,6 +6,7 @@ import { Card } from '../common';
 export type MoveProps = {
   explorer: ExplorerData;
   moves?: Move[];
+  updateHover?: (move: Move | null) => void;
   updateMoves: (moves: Move[]) => void;
 };
 
@@ -49,6 +50,7 @@ const MovesHistory: React.FunctionComponent<MoveProps> = ({
 const MovesList: React.FunctionComponent<MoveProps> = ({
   explorer,
   moves = [],
+  updateHover = () => null,
   updateMoves,
 }) => (
   <div className='overflow-auto'>
@@ -57,6 +59,8 @@ const MovesList: React.FunctionComponent<MoveProps> = ({
         <button
           className='text-left focus:outline-none hover:text-blue-500'
           onClick={() => updateMoves([...moves, move])}
+          onMouseOver={() => updateHover(move)}
+          onMouseLeave={() => updateHover(null)}
         >
           {Math.floor(moves.length / 2) + 1}.{' '}
           {move.move.color === 'white' ? '' : '...'}
