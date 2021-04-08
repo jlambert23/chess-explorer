@@ -15,7 +15,6 @@ export interface Move {
 }
 
 interface MoveDetails {
-  _id: number;
   fen: string;
   color?: 'white' | 'black';
   from?: Key;

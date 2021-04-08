@@ -25,7 +25,6 @@ interface MoveModel extends Model<MoveDocument> {}
 interface GameModel extends Model<GameDocument> {}
 
 const MoveSchema = new Schema<MoveDocument, MoveModel>({
-  _id: Number,
   fen: String,
   color: String,
   from: String,
