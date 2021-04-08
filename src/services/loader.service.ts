@@ -1,39 +1,24 @@
-import { Chess } from 'chess.js';
+import { Chess, ChessInstance } from 'chess.js';
 
 import { getGames, PgnHeaders } from '../apis/chess.com';
-import GameModel, { GameDocument } from '../models/game.model';
+import GameModel, { GameDocument, Move } from '../models/game.model';
 import PlayerModel from '../models/player.model';
 
 export async function loadGame(pgn: string) {
   const chessFullGame = new Chess();
-  const chess = new Chess();
   chessFullGame.load_pgn(pgn, { sloppy: true });
-  const headers = chessFullGame.header() as PgnHeaders;
 
+  const headers = chessFullGame.header() as PgnHeaders;
   const splitUrl = headers.Link.split('/');
-  const gameId = +splitUrl[splitUrl.length - 1];
-  const gameType = splitUrl[splitUrl.length - 2];
-  const endDate = new Date(
-    `${chessFullGame.header().EndDate} ${chessFullGame.header().EndTime}`
-  );
+  const [gameType, gameId] = splitUrl.slice(-2);
+  const _id = +gameId;
 
   return (
-    (await GameModel.findOne({ _id: gameId })) ||
+    (await GameModel.findOne({ _id })) ||
     (await GameModel.create({
-      _id: gameId,
-      white: chessFullGame.header().White,
-      black: chessFullGame.header().Black,
-      date: endDate,
-      type: gameType,
-      result: chessFullGame.header().Result,
-      moves: chessFullGame.history().reduce(
-        (acc, move) => {
-          chess.move(move);
-          acc.push({ fen: chess.fen(), notation: move });
-          return acc;
-        },
-        [{ fen: chess.fen(), notation: '' }]
-      ),
+      _id,
+      gameType,
+      ...newGame(chessFullGame, headers),
     }))
   );
 }
@@ -61,4 +46,32 @@ export async function loadPlayerGames(playerName: string) {
   player.save();
 
   return player;
+}
+
+function newGame(chessFullGame: ChessInstance, headers: PgnHeaders) {
+  const chess = new Chess();
+  const endDate = new Date(`${headers.EndDate} ${headers.EndTime}`);
+
+  const moves = chessFullGame.history({ verbose: true }).reduce<Move[]>(
+    (moves: Move[], { color, to, from, san }) => {
+      chess.move(san);
+      moves.push({
+        fen: chess.fen(),
+        color: color === 'w' ? 'white' : 'black',
+        notation: san,
+        to,
+        from,
+      });
+      return moves;
+    },
+    [{ fen: chess.fen() }]
+  );
+
+  return {
+    white: headers.White,
+    black: headers.Black,
+    result: headers.Result,
+    date: endDate,
+    moves,
+  };
 }
