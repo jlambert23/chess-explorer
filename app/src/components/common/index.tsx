@@ -8,9 +8,13 @@ export type SelectProps = {
 
 export const Button: React.FunctionComponent<ButtonProps> = ({
   children,
+  className,
   ...buttonAttributes
 }) => (
-  <button className='w-full border-2 rounded' {...buttonAttributes}>
+  <button
+    className={`rounded p-2 focus:outline-none ${className}`}
+    {...buttonAttributes}
+  >
     {children}
   </button>
 );

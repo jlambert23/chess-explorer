@@ -28,7 +28,7 @@ const Explorer = () => {
   };
 
   return (
-    <div className='flex justify-center gap-10 h-screen-90'>
+    <div className='flex justify-center gap-14 h-screen-80'>
       <Chessboard
         position={explorer?.fen}
         hover={hover}
