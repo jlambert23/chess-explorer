@@ -8,6 +8,7 @@ import {
 import Error from './Error';
 import Explorer from './Explorer';
 import Header from './Header';
+import LoadPlayers from './LoadPlayers';
 
 const App = () => (
   <Router>
@@ -20,6 +21,9 @@ const App = () => (
           </Route>
           <Route path='/explorer'>
             <Explorer />
+          </Route>
+          <Route path='/load'>
+            <LoadPlayers></LoadPlayers>
           </Route>
           <Route>
             <Error />

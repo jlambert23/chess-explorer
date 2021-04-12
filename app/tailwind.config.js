@@ -14,6 +14,9 @@ module.exports = {
         'screen-60': '60vh',
         'screen-50': '50vh',
       },
+      listStyleType: {
+        circle: 'circle',
+      },
     },
   },
   variants: {

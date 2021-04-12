@@ -6,6 +6,8 @@ export type SelectProps = {
   label?: string;
 } & React.SelectHTMLAttributes<HTMLSelectElement>;
 
+export type CardProps = React.HTMLAttributes<HTMLDivElement>;
+
 export const Button: React.FunctionComponent<ButtonProps> = ({
   children,
   className,
@@ -32,6 +34,15 @@ export const Select: React.FunctionComponent<SelectProps> = ({
   </div>
 );
 
-export const Card: React.FunctionComponent = ({ children }) => (
-  <div className='bg-white rounded overflow-hidden p-2'>{children}</div>
+export const Card: React.FunctionComponent<CardProps> = ({
+  children,
+  className,
+  ...attributes
+}) => (
+  <div
+    {...attributes}
+    className={`bg-white border-2 border-gray-300 rounded overflow-hidden p-2 ${className}`}
+  >
+    {children}
+  </div>
 );
