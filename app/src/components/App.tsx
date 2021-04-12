@@ -13,7 +13,7 @@ const App = () => (
   <Router>
     <div className='bg-black h-screen grid grid-rows-home grid-cols-1 overflow-hidden'>
       <Header />
-      <div className='bg-white flex flex-col justify-center'>
+      <div className='bg-white'>
         <Switch>
           <Route exact path='/'>
             <Redirect to='/explorer' />

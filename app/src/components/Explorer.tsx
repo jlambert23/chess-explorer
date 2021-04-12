@@ -28,24 +28,26 @@ const Explorer = () => {
   };
 
   return (
-    <div className='flex justify-center gap-14 h-screen-80'>
-      <Chessboard
-        position={explorer?.fen}
-        hover={hover}
-        lastMove={getLastMove()}
-      />
-      <Sidebar
-        players={players}
-        filter={({ playerName, color }) => {
-          explorer.source = playerName || explorer.source;
-          explorer.color = color || explorer.color;
-          setExplorer(explorer);
-        }}
-        explorer={explorer}
-        moves={moves}
-        updateHover={setHover}
-        updateMoves={updateMoves}
-      />
+    <div className='h-full flex justify-center items-center'>
+      <div className='flex justify-center gap-14 h-screen-80'>
+        <Chessboard
+          position={explorer?.fen}
+          hover={hover}
+          lastMove={getLastMove()}
+        />
+        <Sidebar
+          players={players}
+          filter={({ playerName, color }) => {
+            explorer.source = playerName || explorer.source;
+            explorer.color = color || explorer.color;
+            setExplorer(explorer);
+          }}
+          explorer={explorer}
+          moves={moves}
+          updateHover={setHover}
+          updateMoves={updateMoves}
+        />
+      </div>
     </div>
   );
 };
