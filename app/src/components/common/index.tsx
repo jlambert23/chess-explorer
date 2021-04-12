@@ -12,8 +12,8 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
   ...buttonAttributes
 }) => (
   <button
-    className={`rounded p-2 focus:outline-none ${className}`}
     {...buttonAttributes}
+    className={`border-2 rounded p-2 focus:outline-none focus:border-gray-400 ${className}`}
   >
     {children}
   </button>
@@ -26,7 +26,7 @@ export const Select: React.FunctionComponent<SelectProps> = ({
 }) => (
   <div className='flex w-full'>
     {label ? <label className='font-bold'>{label}</label> : ''}
-    <select className='rounded border mx-2 w-full pl-0.5' {...selectAttributes}>
+    <select {...selectAttributes} className='rounded border mx-2 w-full pl-0.5'>
       {children}
     </select>
   </div>
