@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Card } from '../common';
+import { Button, Card } from '../../common';
 import { MoveProps } from './Moves';
 
 export type NavProps = MoveProps;

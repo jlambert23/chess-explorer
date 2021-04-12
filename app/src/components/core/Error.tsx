@@ -1,4 +1,4 @@
-import four04 from '../images/404.png';
+import four04 from '../../images/404.png';
 
 const Error = () => (
   <div className='h-full flex flex-col justify-center items-center'>

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ExplorerData, Move } from '../../models/explorer.model';
-import { Card } from '../common';
+import { ExplorerData, Move } from '../../../models/explorer.model';
+import { Card } from '../../common';
 
 export type MoveProps = {
   explorer: ExplorerData;

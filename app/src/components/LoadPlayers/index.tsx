@@ -1,6 +1,6 @@
 import { useState, FunctionComponent } from 'react';
 
-import { Card, Button } from './common';
+import { Card, Button } from '../common';
 
 interface ResultLine {
   label: string;

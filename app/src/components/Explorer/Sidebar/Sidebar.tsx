@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Card } from '../common';
+import { Card } from '../../common';
 import { FilterProps, FilterCard } from './Fitler';
 import { MoveProps, MovesCard } from './Moves';
 import { NavProps, NavCard } from './Nav';

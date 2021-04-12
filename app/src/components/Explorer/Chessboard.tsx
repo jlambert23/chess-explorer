@@ -1,7 +1,7 @@
 import Chessground, { DrawShape, Key } from 'react-chessground';
 import 'react-chessground/dist/styles/chessground.css';
 
-import { Move } from '../models/explorer.model';
+import { Move } from '../../models/explorer.model';
 
 const BOARD_SIZE = '80vh';
 

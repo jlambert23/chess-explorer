@@ -5,9 +5,9 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import Error from './Error';
+import Error from './core/Error';
+import Header from './core/Header';
 import Explorer from './Explorer';
-import Header from './Header';
 import LoadPlayers from './LoadPlayers';
 
 const App = () => (

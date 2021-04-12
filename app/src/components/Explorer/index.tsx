@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
+import { useFetch } from '../../apis';
+import { useExplorer } from '../../apis/explorer.api';
+import { Move } from '../../models/explorer.model';
+import { Player } from '../../models/player.model';
 import Sidebar from './Sidebar/Sidebar';
 import Chessboard from './Chessboard';
-import { useFetch } from '../apis';
-import { useExplorer } from '../apis/explorer.api';
-import { Move } from '../models/explorer.model';
-import { Player } from '../models/player.model';
 
 const Explorer = () => {
   const [explorer, setExplorer] = useExplorer();

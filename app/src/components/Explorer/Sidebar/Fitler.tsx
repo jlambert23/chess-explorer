@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { Player } from '../../models/player.model';
-import { Card, Select } from '../common';
+import { Player } from '../../../models/player.model';
+import { Card, Select } from '../../common';
 
 export type FilterProps = {
   players?: Player[];
