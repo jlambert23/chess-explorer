@@ -1,5 +1,10 @@
 import { get } from '../_https.api';
-import { ChessArchives, ChessGames, ChessPlayer } from './chess.com.model';
+import {
+  ChessArchives,
+  ChessGames,
+  ChessPlayer,
+  ChessPlayerStats,
+} from './chess.com.model';
 
 const chessApiUrl = 'https://api.chess.com/pub/player';
 
@@ -8,6 +13,7 @@ export function getArchives(player: string): Promise<ChessArchives> {
 }
 
 export async function getGames(player: string, lastUpdated?: Date) {
+  console.time('getGames');
   const dates = await getGameDates(player, lastUpdated);
 
   const chessGame = dates.reduce(async (acc, { year, month }) => {
@@ -17,6 +23,7 @@ export async function getGames(player: string, lastUpdated?: Date) {
     return Promise.resolve(accumulator);
   }, Promise.resolve({ games: [] } as ChessGames));
 
+  console.timeEnd('getGames');
   return chessGame;
 }
 
@@ -33,12 +40,15 @@ export async function getGamesAsPgns(player: string) {
   return pgns;
 }
 
-export function getGamesByYearMonth(
+export async function getGamesByYearMonth(
   player: string,
   year: string,
   month: string
 ) {
-  return get<ChessGames>(`${chessApiUrl}/${player}/games/${year}/${month}`);
+  const games = await get<ChessGames>(
+    `${chessApiUrl}/${player}/games/${year}/${month}`
+  );
+  return setGameIdAndType(games);
 }
 
 export function getGamesByYearMonthPgn(
@@ -51,6 +61,10 @@ export function getGamesByYearMonthPgn(
 
 export function getPlayer(player: string) {
   return get<ChessPlayer>(`${chessApiUrl}/${player}`);
+}
+
+export function getPlayerStats(player: string) {
+  return get<ChessPlayerStats>(`${chessApiUrl}/${player}/stats`);
 }
 
 async function getGameDates(player: string, lastUpdated?: Date) {
@@ -72,4 +86,13 @@ async function getGameDates(player: string, lastUpdated?: Date) {
   }
 
   return dates;
+}
+
+function setGameIdAndType(games: ChessGames) {
+  games.games.forEach((game) => {
+    const [gameType, id] = game.url.split('/').slice(-2);
+    game._id = +id;
+    game._gameType = gameType;
+  });
+  return games;
 }

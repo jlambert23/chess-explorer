@@ -1,11 +1,9 @@
 import { Router } from 'express';
 
 import { validateCreate, validatePlayerParam } from './validators';
-import {
-  findPlayer,
-  findPlayerNames,
-} from '../../controllers/player.controller';
+import { findPlayerNames } from '../../controllers/player.controller';
 import { loadPlayerGames } from '../../services/loader.service';
+import { getPlayerData } from '../../services/player.service';
 
 const playerRouter = Router();
 
@@ -21,13 +19,16 @@ playerRouter
     res.send(player);
   });
 
-playerRouter.use('/:playerName', validatePlayerParam);
 playerRouter.route('/:playerName').get(async (req, res) => {
   const playerName = req.params.playerName;
-  const player = await findPlayer(playerName);
+  const player = await getPlayerData(playerName);
+  if (!player) {
+    return res.status(404).send(`could not find player ${playerName}`);
+  }
   res.send(player);
 });
 
+playerRouter.use('/:playerName/refresh', validatePlayerParam);
 playerRouter.route('/:playerName/refresh').post(async (req, res) => {
   const playerName = req.params.playerName;
   const player = await loadPlayerGames(playerName);
