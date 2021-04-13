@@ -1,4 +1,4 @@
-import { useState, FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { Card, Button } from '../common';
 
@@ -29,31 +29,54 @@ const mockData: ResultLine[] = [
 
 const LoadPlayers = () => {
   const [results, setResults] = useState<any>();
+
+  const onSearch = (term: string) => {
+    console.log(term);
+    setResults(mockData);
+  };
+
   return (
     <div className='flex flex-col items-center'>
       <div className='text-4xl font-bold my-6'>Load Players</div>
       {results ? (
         <Results results={results} onBack={() => setResults(null)} />
       ) : (
-        <Search onSearch={setResults} />
+        <Search onSearch={onSearch} />
       )}
     </div>
   );
 };
 
-const Search: FunctionComponent<{ onSearch: (res: any) => void }> = ({
+const Search: FunctionComponent<{ onSearch: (term: string) => void }> = ({
   onSearch,
-}) => (
-  <div className='w-full flex flex-col items-center'>
-    <div className='mb-4'>
-      <label>Search Player:</label>
-      <input className='ml-2 border-2 rounded' />
-    </div>
-    <Button className='w-1/6' onClick={() => onSearch(mockData)}>
-      Search
-    </Button>
-  </div>
-);
+}) => {
+  const [input, setInput] = useState({ value: '' });
+  return (
+    <form
+      className='w-full flex flex-col items-center'
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSearch(input.value);
+      }}
+    >
+      <div className='mb-4'>
+        <label>Search Player:</label>
+        <input
+          value={input.value}
+          onChange={(e) => setInput({ value: e.target.value })}
+          className='ml-2 border-2 rounded'
+        />
+      </div>
+      <Button
+        type='submit'
+        className='w-1/6 disabled:bg-gray-500 disabled:opacity-20'
+        disabled={!input.value}
+      >
+        Search
+      </Button>
+    </form>
+  );
+};
 
 const Results: FunctionComponent<{
   results: ResultLine[];
