@@ -68,14 +68,15 @@ export function getPlayerStats(player: string) {
 }
 
 async function getGameDates(player: string, lastUpdated?: Date) {
-  const { archives } = (await getArchives(player)) || { archives: [] };
+  const archives = await getArchives(player);
 
-  let dates = archives.map((archive) => {
-    const split = archive.split('/');
-    const year = split[split.length - 2];
-    const month = split[split.length - 1];
-    return { year, month };
-  });
+  let dates =
+    archives?.archives.map((archive) => {
+      const split = archive.split('/');
+      const year = split[split.length - 2];
+      const month = split[split.length - 1];
+      return { year, month };
+    }) || [];
 
   if (lastUpdated) {
     lastUpdated.setDate(0);
