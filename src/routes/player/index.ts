@@ -22,9 +22,6 @@ playerRouter
 playerRouter.route('/:playerName').get(async (req, res) => {
   const playerName = req.params.playerName;
   const player = await getPlayerData(playerName);
-  if (!player) {
-    return res.status(404).send(`could not find player ${playerName}`);
-  }
   res.send(player);
 });
 

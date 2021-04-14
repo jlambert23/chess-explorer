@@ -25,10 +25,6 @@ export async function getPlayerData(playerName: string): Promise<PlayerData> {
   const chessPlayer = await getPlayer(playerName);
   const chessPlayerStats = await getPlayerStats(playerName);
 
-  if (!chessPlayer) {
-    return null;
-  }
-
   return {
     _id: loadedPlayer?._id,
     playerName: chessPlayer.username,
