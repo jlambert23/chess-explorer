@@ -1,45 +1,22 @@
 import { FunctionComponent, useState } from 'react';
 
-import { Card, Button } from '../common';
-
-interface ResultLine {
-  label: string;
-  value: string | ResultLine[];
-}
-
-const mockData: ResultLine[] = [
-  { label: 'Country', value: 'US' },
-  {
-    label: 'Rating',
-    value: [
-      {
-        label: 'Daily',
-        value: '1100',
-      },
-      { label: 'Blitz', value: '1000' },
-      {
-        label: 'Rapid',
-        value: '1100',
-      },
-    ],
-  },
-  { label: 'No. of Games', value: '203' },
-  { label: 'Last Updated', value: 'never' },
-];
+import { fetcher } from '../../apis/index';
+import { PlayerInfo } from '../../models/player.model';
+import { Button, Card, Conditional, Label } from '../common';
 
 const LoadPlayers = () => {
-  const [results, setResults] = useState<any>();
+  const [player, setPlayer] = useState<PlayerInfo | null>();
 
-  const onSearch = (term: string) => {
-    console.log(term);
-    setResults(mockData);
+  const onSearch = async (term: string) => {
+    const player = await fetcher<PlayerInfo>(`player/${term}`);
+    setPlayer(player);
   };
 
   return (
     <div className='flex flex-col items-center'>
       <div className='text-4xl font-bold my-6'>Load Players</div>
-      {results ? (
-        <Results results={results} onBack={() => setResults(null)} />
+      {player ? (
+        <Results player={player} onBack={() => setPlayer(null)} />
       ) : (
         <Search onSearch={onSearch} />
       )}
@@ -64,7 +41,7 @@ const Search: FunctionComponent<{ onSearch: (term: string) => void }> = ({
         <input
           value={input.value}
           onChange={(e) => setInput({ value: e.target.value })}
-          className='ml-2 border-2 rounded'
+          className='ml-2 border-2 rounded pl-1'
         />
       </div>
       <Button
@@ -79,37 +56,69 @@ const Search: FunctionComponent<{ onSearch: (term: string) => void }> = ({
 };
 
 const Results: FunctionComponent<{
-  results: ResultLine[];
+  player: PlayerInfo;
   onBack?: () => void;
-}> = ({ results, onBack }) => (
+}> = ({ player, onBack }) => (
   <div className='w-full flex flex-col items-center'>
     <Card className='w-1/5 px-6 flex flex-col items-center'>
       <div className='w-full text-3xl font-medium text-center border-b-2 mb-2 pb-1'>
-        justuntinian
+        {player.playerName}
       </div>
-      <ResultList results={results} />
+      <ul className='list-outside'>
+        <Conditional condition={player.country}>
+          <li>
+            <Label>Country:</Label>
+            {player.country}
+          </li>
+        </Conditional>
+        <Conditional condition={player.rating}>
+          <li>
+            <Label>Rating:</Label>
+            <ul className='list-outside'>
+              <Conditional condition={player.rating['chess_daily']}>
+                <li>
+                  <Label>Daily:</Label>
+                  {player.rating['chess_daily']}
+                </li>
+              </Conditional>
+              <Conditional condition={player.rating['chess_rapid']}>
+                <li>
+                  <Label>Rapid:</Label>
+                  {player.rating['chess_rapid']}
+                </li>
+              </Conditional>
+              <Conditional condition={player.rating['chess_bullet']}>
+                <li>
+                  <Label>Bullet:</Label>
+                  {player.rating['chess_bullet']}
+                </li>
+              </Conditional>
+              <Conditional condition={player.rating['chess_blitz']}>
+                <li>
+                  <Label>Blitz:</Label>
+                  {player.rating['chess_blitz']}
+                </li>
+              </Conditional>
+            </ul>
+          </li>
+        </Conditional>
+        <Conditional condition={player.games.loaded || player.games.unloaded}>
+          <li>
+            <Label>No. of Games:</Label>
+            {player.games.loaded}
+            <Conditional condition={player.games.unloaded}>
+              <small className='text-green-400 ml-1'>
+                ({player.games.unloaded} new)
+              </small>
+            </Conditional>
+          </li>
+        </Conditional>
+      </ul>
     </Card>
     <Button className='mt-4 px-10' onClick={onBack}>
       Back
     </Button>
   </div>
-);
-
-const ResultList: FunctionComponent<{ results: ResultLine[] }> = ({
-  results,
-}) => (
-  <ul className='list-outside'>
-    {results.map(({ label, value }) => (
-      <li>
-        <div className='inline font-medium mr-2'>{label}:</div>
-        {typeof value === 'object' ? (
-          <ResultList results={value}></ResultList>
-        ) : (
-          <div className='inline'>{value}</div>
-        )}
-      </li>
-    ))}
-  </ul>
 );
 
 export default LoadPlayers;
