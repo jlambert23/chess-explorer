@@ -14,8 +14,8 @@ const extractError = (err: any) => {
   let status = 500;
   let message = err;
   if (typeof err === 'object') {
-    status = err?.statusCode || status;
-    message = err?.message || message;
+    status = err?.response?.status || status;
+    message = err?.response?.data || message;
   }
   return { status, message };
 };
