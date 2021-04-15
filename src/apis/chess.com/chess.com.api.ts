@@ -13,42 +13,42 @@ export function getArchives(player: string): Promise<ChessArchives> {
 }
 
 export async function getGames(player: string, lastUpdated?: Date) {
-  console.time('getGames');
   const dates = await getGameDates(player, lastUpdated);
+  const chessGames: ChessGames = { games: [] };
 
-  const chessGame = dates.reduce(async (acc, { year, month }) => {
-    const accumulator = await acc;
+  for (let { year, month } of dates) {
     const { games } = await getGamesByYearMonth(player, year, month);
-    accumulator.games = [...accumulator.games, ...games];
-    return Promise.resolve(accumulator);
-  }, Promise.resolve({ games: [] } as ChessGames));
+    chessGames.games.push(...games);
+  }
 
-  console.timeEnd('getGames');
-  return chessGame;
+  return chessGames;
 }
 
-export async function getGamesAsPgns(player: string) {
-  const dates = await getGameDates(player);
-
-  const pgns = dates.reduce(async (acc, { year, month }, i) => {
-    const accumulator = await acc;
-    const pgns = await getGamesByYearMonthPgn(player, year, month);
-    const newlines = i ? '\n\n' : '';
-    return Promise.resolve(accumulator + newlines + pgns);
-  }, Promise.resolve(''));
-
-  return pgns;
+export async function getGamesAsPgns(player: string, lastUpdated?: Date) {
+  const dates = await getGameDates(player, lastUpdated);
+  const pgns: string[] = [];
+  for (let { year, month } of dates) {
+    pgns.push(await getGamesByYearMonthPgn(player, year, month));
+  }
+  return pgns.join('\n\n');
 }
 
 export async function getGamesByYearMonth(
   player: string,
   year: string,
   month: string
-) {
+): Promise<ChessGames> {
   const games = await get<ChessGames>(
     `${chessApiUrl}/${player}/games/${year}/${month}`
   );
-  return setGameIdAndType(games);
+
+  games.games.forEach((game) => {
+    const [gameType, id] = game.url.split('/').slice(-2);
+    game._id = +id;
+    game._gameType = gameType;
+  });
+
+  return games;
 }
 
 export function getGamesByYearMonthPgn(
@@ -86,14 +86,6 @@ async function getGameDates(player: string, lastUpdated?: Date) {
     console.log(dates);
   }
 
+  console.log(`${player} has ${dates.length} dates`);
   return dates;
-}
-
-function setGameIdAndType(games: ChessGames) {
-  games.games.forEach((game) => {
-    const [gameType, id] = game.url.split('/').slice(-2);
-    game._id = +id;
-    game._gameType = gameType;
-  });
-  return games;
 }
