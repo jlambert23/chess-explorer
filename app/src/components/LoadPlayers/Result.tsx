@@ -50,13 +50,13 @@ const Result: FunctionComponent<{
             </ul>
           </li>
         </Conditional>
-        <Conditional condition={player.games.loaded || player.games.unloaded}>
+        <Conditional condition={player.games.count || player.games.new}>
           <li>
             <Label>No. of Games:</Label>
-            {player.games.loaded}
-            <Conditional condition={player.games.unloaded}>
+            {player.games.count}
+            <Conditional condition={player.games.new}>
               <small className='text-green-400 ml-1'>
-                ({player.games.unloaded} new)
+                ({player.games.new} new)
               </small>
             </Conditional>
           </li>

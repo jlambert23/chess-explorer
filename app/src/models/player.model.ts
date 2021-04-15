@@ -7,8 +7,8 @@ export interface PlayerInfo extends Player {
   country: string;
   rating: { [gameType: string]: number };
   games: {
-    loaded: number;
-    unloaded: number;
+    count: number;
+    new?: number;
   };
   lastUpdated?: Date;
 }

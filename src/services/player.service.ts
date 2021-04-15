@@ -14,8 +14,8 @@ interface PlayerData {
   country: string;
   rating: { [gameType: string]: number };
   games: {
-    loaded: number;
-    unloaded: number;
+    count: number;
+    new?: number;
   };
   lastUpdated?: Date;
 }
@@ -31,8 +31,8 @@ export async function getPlayerData(playerName: string): Promise<PlayerData> {
     country: chessPlayer.country?.split('/').pop(),
     rating: getRating(chessPlayerStats),
     games: {
-      loaded: loadedPlayer?.games.length || 0,
-      unloaded: await countUnloadedGames(playerName, loadedPlayer?.lastUpdated),
+      count: loadedPlayer?.games.length || 0,
+      new: await countUnloadedGames(playerName, loadedPlayer?.lastUpdated),
     },
     lastUpdated: loadedPlayer?.lastUpdated,
   };
