@@ -21,7 +21,7 @@ const Header = () => (
     </div>
     <div className='w-full flex items-center gap-4 text-2xl font-semibold'>
       <Nav to='/explorer'>Explorer</Nav>
-      <Nav to='load'>Load Players</Nav>
+      <Nav to='players'>Players</Nav>
     </div>
   </div>
 );

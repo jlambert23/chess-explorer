@@ -8,7 +8,7 @@ import {
 import Error from './core/Error';
 import Header from './core/Header';
 import Explorer from './Explorer';
-import LoadPlayers from './LoadPlayers';
+import Players from './Players';
 
 const App = () => (
   <Router>
@@ -22,8 +22,8 @@ const App = () => (
           <Route path='/explorer'>
             <Explorer />
           </Route>
-          <Route path='/load'>
-            <LoadPlayers></LoadPlayers>
+          <Route path='/players'>
+            <Players></Players>
           </Route>
           <Route>
             <Error />
