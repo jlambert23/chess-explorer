@@ -8,10 +8,6 @@ export const validateCreate: RequestHandler = async (req, res, next) => {
   if (!playerName) {
     return res.status(400).send('playerName required in request body.\n');
   }
-  if (await playerExists(playerName)) {
-    const message = `Player ${playerName} already exists. POST to player/${playerName}/refresh to update games.\n`;
-    return res.status(400).send(message);
-  }
   if (!(await getPlayer(playerName))) {
     return res.status(404).send(`Unable to find player ${playerName}.\n`);
   }

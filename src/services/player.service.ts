@@ -1,12 +1,10 @@
 import {
   ChessPlayerStats,
   GameStats,
-  getGames,
   getPlayer,
   getPlayerStats,
 } from '../apis/chess.com';
 import { findPlayer } from '../controllers/player.controller';
-import GameModel from './../models/game.model';
 
 interface PlayerData {
   _id?: string;
@@ -32,7 +30,6 @@ export async function getPlayerData(playerName: string): Promise<PlayerData> {
     rating: getRating(chessPlayerStats),
     games: {
       count: loadedPlayer?.games.length || 0,
-      new: await countUnloadedGames(playerName, loadedPlayer?.lastUpdated),
     },
     lastUpdated: loadedPlayer?.lastUpdated,
   };
@@ -52,11 +49,4 @@ function getRating(stats: ChessPlayerStats) {
     }
     return rating;
   }, {} as { [gameType: string]: number });
-}
-
-async function countUnloadedGames(playerName: string, lastUpdated?: Date) {
-  const { games } = await getGames(playerName, lastUpdated);
-  const ids = games.map((game) => +game.url.split('/').pop());
-  const count = await GameModel.countDocuments({ _id: { $in: ids } });
-  return games.length - count;
 }

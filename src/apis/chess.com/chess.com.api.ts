@@ -83,9 +83,8 @@ async function getGameDates(player: string, lastUpdated?: Date) {
     dates = dates.filter(
       ({ year, month }) => new Date(`${month}/01/${year}`) > lastUpdated
     );
-    console.log(dates);
   }
 
-  console.log(`${player} has ${dates.length} dates`);
+  console.log(`${player} has up to ${dates.length} month(s) of games to load`);
   return dates;
 }

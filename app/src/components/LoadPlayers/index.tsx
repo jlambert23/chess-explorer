@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { fetcher } from '../../apis/index';
+import { poster } from '../../apis/index';
 import { PlayerInfo } from '../../models/player.model';
 import Search from './Search';
 import Result from './Result';
@@ -9,7 +9,7 @@ const LoadPlayers = () => {
   const [player, setPlayer] = useState<PlayerInfo | null>();
 
   const onSearch = async (term: string) => {
-    const player = await fetcher<PlayerInfo>(`player/${term}`);
+    const player = await poster<PlayerInfo>('player', { playerName: term });
     setPlayer(player);
   };
 

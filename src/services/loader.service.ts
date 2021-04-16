@@ -13,21 +13,27 @@ export async function loadGame(pgn: string) {
   const [gameType, gameId] = splitUrl.slice(-2);
   const _id = +gameId;
 
-  return (
-    (await GameModel.findOne({ _id })) ||
-    (await GameModel.create({
-      _id,
-      gameType,
-      ...newGame(chessFullGame, headers),
-    }))
-  );
+  return (await GameModel.findOne({ _id }))
+    ? null
+    : await GameModel.create({
+        _id,
+        gameType,
+        ...newGame(chessFullGame, headers),
+      });
 }
 
 export async function loadGames(pgns: string[]) {
   const games = [] as GameDocument[];
   for (const [i, pgn] of pgns.entries()) {
-    console.log(`loaded game ${i + 1} out of ${pgns.length}`);
-    games.push(await loadGame(pgn));
+    const game = await loadGame(pgn);
+    if (game) {
+      console.log(`loading game ${i + 1} out of ${pgns.length}`);
+      games.push(game);
+    } else {
+      console.log(
+        `game ${i + 1} out of ${pgns.length} is already in the database`
+      );
+    }
   }
   return games;
 }
@@ -40,12 +46,13 @@ export async function loadPlayerGames(playerName: string) {
   const { games } = await getGames(playerName, player.lastUpdated);
   const pgns = games.map((game) => game.pgn);
   const loadedGames = await loadGames(pgns);
+  const ids = loadedGames.map(({ _id }) => _id);
 
   player.lastUpdated = new Date();
-  player.games = loadedGames.map(({ _id }) => _id);
+  player.games = [...player.games, ...ids];
   player.save();
 
-  return player;
+  return ids;
 }
 
 function newGame(chessFullGame: ChessInstance, headers: PgnHeaders) {
