@@ -24,10 +24,10 @@ const Search: FunctionComponent<{ onSearch: (term: string) => void }> = ({
       </div>
       <Button
         type='submit'
-        className='w-1/6 text-white border-white bg-red-500 hover:bg-red-600 disabled:bg-gray-500 disabled:opacity-20'
+        className='w-1/6 disabled:bg-gray-500 disabled:opacity-20'
         disabled={!input.value}
       >
-        <strong>Load Player</strong>
+        <strong>Find Player</strong>
       </Button>
     </form>
   );
