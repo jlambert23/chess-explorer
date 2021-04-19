@@ -27,7 +27,7 @@ export async function loadGames(pgns: string[]) {
   const games = [] as GameDocument[];
   for (const [i, pgn] of pgns.entries()) {
     const game = await loadGame(pgn);
-    if (i && (i + 1) % 50) {
+    if ((i + 1) % 50 === 0) {
       console.log(`${i + 1} of ${pgns.length} games...`);
     }
     games.push(game);
@@ -48,7 +48,7 @@ export async function loadPlayerGames(playerName: string) {
 
   player.lastUpdated = new Date();
   player.games = [...player.games, ...ids];
-  player.save();
+  await player.save();
 
   return ids;
 }
