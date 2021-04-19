@@ -17,7 +17,7 @@ const Nav: FunctionComponent<{ to: string }> = ({ to, children }) => (
 const Header: FunctionComponent<{ toggleDark?: (value: boolean) => void }> = ({
   toggleDark,
 }) => (
-  <div className='px-4 py-1.5 flex text-white font-mono'>
+  <div className='px-4 py-1.5 flex text-secondary font-mono'>
     <img src={logo} alt='Logo' />
     <div className='flex items-center font-bold text-5xl tracking-widest pr-10'>
       <NavLink to='/'>justchess</NavLink>

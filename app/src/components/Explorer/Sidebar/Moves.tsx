@@ -57,7 +57,7 @@ const MovesList: React.FunctionComponent<MoveProps> = ({
     {explorer.nextMoves?.map((move) => (
       <div key={move.move.notation} className='grid grid-cols-2'>
         <button
-          className='text-left focus:outline-none hover:text-blue-500'
+          className='text-left focus:outline-none hover:text-tertiary'
           onClick={() => updateMoves([...moves, move])}
           onMouseOver={() => updateHover(move)}
           onMouseLeave={() => updateHover(null)}

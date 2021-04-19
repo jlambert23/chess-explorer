@@ -17,10 +17,10 @@ const App = () => {
   return (
     <Router>
       <div
-        className={`${dark} bg-black h-screen grid grid-rows-home grid-cols-1 overflow-hidden`}
+        className={`${dark} bg-secondary h-screen grid grid-rows-home grid-cols-1 overflow-hidden`}
       >
         <Header toggleDark={(val) => setDark(val ? 'dark' : '')} />
-        <div className='bg-white'>
+        <div className='bg-primary'>
           <Switch>
             <Route exact path='/'>
               <Redirect to='/explorer' />

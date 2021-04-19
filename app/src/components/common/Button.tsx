@@ -9,7 +9,7 @@ export const Button: FunctionComponent<ButtonProps> = ({
 }) => (
   <button
     {...buttonAttributes}
-    className={`border-2 rounded p-2 focus:outline-none focus:border-gray-400 ${className}`}
+    className={`border-2 rounded p-2 filter hover:brightness-90 focus:brightness-90 focus:outline-none ${className}`}
   >
     {children}
   </button>

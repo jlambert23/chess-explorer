@@ -13,3 +13,14 @@
     @apply list-circle;
   }
 }
+
+:root {
+  --bg-primary: theme('colors.white');
+  --bg-secondary: theme('colors.black');
+  --text-primary: theme('colors.black');
+  --text-secondary: theme('colors.white');
+  --text-tertiary: theme('colors.blue.500');
+  --danger: theme('colors.red.500');
+  --success: theme('colors.green.500');
+  --warn: theme('colors.yellow.500');
+}
