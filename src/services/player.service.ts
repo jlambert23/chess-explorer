@@ -11,10 +11,7 @@ interface PlayerData {
   playerName: string;
   country: string;
   rating: { [gameType: string]: number };
-  games: {
-    count: number;
-    new?: number;
-  };
+  games: number;
   lastUpdated?: Date;
 }
 
@@ -28,9 +25,7 @@ export async function getPlayerData(playerName: string): Promise<PlayerData> {
     playerName: chessPlayer.username,
     country: chessPlayer.country?.split('/').pop(),
     rating: getRating(chessPlayerStats),
-    games: {
-      count: loadedPlayer?.games.length || 0,
-    },
+    games: loadedPlayer?.games.length,
     lastUpdated: loadedPlayer?.lastUpdated,
   };
 }

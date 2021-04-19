@@ -8,7 +8,7 @@ const Result: FunctionComponent<{
   onBack?: () => void;
   onLoad?: () => void;
 }> = ({ player, onBack, onLoad }) => {
-  const hasGames = player.games.count || player.games.new;
+  const hasGames = !!player.games;
   return (
     <div className='w-full flex flex-col items-center'>
       <Card className='w-1/5 px-6 flex flex-col items-center'>
@@ -56,12 +56,7 @@ const Result: FunctionComponent<{
           <Conditional condition={hasGames}>
             <li>
               <Label>No. of Games:</Label>
-              {player.games.count}
-              <Conditional condition={player.games.new}>
-                <small className='text-green-400 ml-1'>
-                  ({player.games.new} new)
-                </small>
-              </Conditional>
+              {player.games}
             </li>
           </Conditional>
         </ul>

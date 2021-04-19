@@ -6,9 +6,6 @@ export interface Player {
 export interface PlayerInfo extends Player {
   country: string;
   rating: { [gameType: string]: number };
-  games: {
-    count: number;
-    new?: number;
-  };
+  games: number;
   lastUpdated?: Date;
 }

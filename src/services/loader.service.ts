@@ -13,28 +13,26 @@ export async function loadGame(pgn: string) {
   const [gameType, gameId] = splitUrl.slice(-2);
   const _id = +gameId;
 
-  return (await GameModel.findOne({ _id }))
-    ? null
-    : await GameModel.create({
-        _id,
-        gameType,
-        ...newGame(chessFullGame, headers),
-      });
+  return (
+    (await GameModel.findOne({ _id })) ||
+    (await GameModel.create({
+      _id,
+      gameType,
+      ...newGame(chessFullGame, headers),
+    }))
+  );
 }
 
 export async function loadGames(pgns: string[]) {
   const games = [] as GameDocument[];
   for (const [i, pgn] of pgns.entries()) {
     const game = await loadGame(pgn);
-    if (game) {
-      console.log(`loading game ${i + 1} out of ${pgns.length}`);
-      games.push(game);
-    } else {
-      console.log(
-        `game ${i + 1} out of ${pgns.length} is already in the database`
-      );
+    if (i && (i + 1) % 50) {
+      console.log(`${i + 1} of ${pgns.length} games...`);
     }
+    games.push(game);
   }
+  console.log(`${games.length} game(s) loaded`);
   return games;
 }
 

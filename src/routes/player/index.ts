@@ -15,9 +15,8 @@ playerRouter
   })
   .post(validateCreate, async (req, res) => {
     const playerName = req.body?.playerName;
-    const newGameIds = await loadPlayerGames(playerName);
+    await loadPlayerGames(playerName);
     const player = await getPlayerData(playerName);
-    player.games.new = newGameIds.length;
     res.send(player);
   });
 
