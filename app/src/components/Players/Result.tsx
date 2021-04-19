@@ -59,6 +59,12 @@ const Result: FunctionComponent<{
               {player.games}
             </li>
           </Conditional>
+          <Conditional condition={player.lastUpdated}>
+            <li>
+              <Label>Last updated:</Label>
+              {new Intl.DateTimeFormat('en-US').format(player.lastUpdated)}
+            </li>
+          </Conditional>
         </ul>
       </Card>
       <Conditional condition={!hasGames}>
