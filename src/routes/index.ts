@@ -15,9 +15,17 @@ const extractError = (err: any) => {
   let message = err;
   if (typeof err === 'object') {
     status = err?.response?.status || status;
-    message = err?.response?.data || message;
+    message = err?.response?.data || stringifyError(message);
   }
   return { status, message };
+};
+
+const stringifyError = function (err: any) {
+  const plainObject = {};
+  Object.getOwnPropertyNames(err).forEach(
+    (key) => (plainObject[key] = err[key])
+  );
+  return JSON.stringify(plainObject);
 };
 
 export default function (app: Express) {
