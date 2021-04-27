@@ -68,7 +68,7 @@ const Result: FunctionComponent<{
         </ul>
       </Card>
       <Conditional condition={!hasGames}>
-        <div className='text-center font-semibold text-secondary bg-warn mt-4 px-2 rounded'>
+        <div className='text-center font-semibold text-0 dark:text-black bg-warn mt-4 px-2 rounded'>
           No games have been loaded for this player.
         </div>
       </Conditional>
@@ -77,8 +77,8 @@ const Result: FunctionComponent<{
           Back
         </Button>
         <Button
-          className={`px-4 text-secondary border-white ${
-            hasGames ? 'bg-success' : 'bg-danger'
+          className={`px-4 font-medium text-0 dark:text-1 dark:bg-1 ${
+            hasGames ? 'bg-success border-success' : 'bg-danger border-danger'
           }`}
           onClick={onLoad}
         >

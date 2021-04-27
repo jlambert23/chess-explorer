@@ -15,7 +15,7 @@ const Sidebar: React.FunctionComponent<SidebarProps> = ({
   updateHover,
   updateMoves,
 }) => (
-  <div className='bg-secondary grid grid-rows-sidebar gap-2 p-2 rounded w-96'>
+  <div className='bg-0 grid grid-rows-sidebar gap-2 p-2 rounded w-96'>
     <Card>
       <div className='font-bold text-3xl text-center'>Explorer</div>
     </Card>

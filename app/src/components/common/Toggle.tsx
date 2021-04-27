@@ -20,7 +20,7 @@ export const Toggle: FunctionComponent<ToggleProps> = ({
 
   return (
     <div className='flex items-center'>
-      <div className='flex items-center border-white border-2 rounded p-2'>
+      <div className='flex items-center border-2 rounded p-2'>
         <input type='checkbox' onChange={toggle} checked={checked} />
         <label className='ml-2'>{label}</label>
       </div>

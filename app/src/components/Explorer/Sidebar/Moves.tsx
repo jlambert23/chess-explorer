@@ -30,12 +30,12 @@ const MovesHistory: React.FunctionComponent<MoveProps> = ({
       return (
         <div
           key={move.move.notation}
-          className={`inline ${current ? '' : 'text-gray-600'}`}
+          className={`inline ${current ? '' : 'text-3'}`}
         >
           {moveNo}
           <button
-            className={`inline font-medium px-1 rounded-sm focus:outline-none hover:bg-gray-300 ${
-              current ? 'bg-gray-200' : ''
+            className={`inline font-medium px-1 rounded-sm focus:outline-none hover:bg-highlight-dark ${
+              current ? 'bg-highlight' : ''
             }`}
             onClick={() => updateMoves(moves.slice(0, i + 1))}
           >
@@ -57,7 +57,7 @@ const MovesList: React.FunctionComponent<MoveProps> = ({
     {explorer.nextMoves?.map((move) => (
       <div key={move.move.notation} className='grid grid-cols-2'>
         <button
-          className='text-left focus:outline-none hover:text-tertiary'
+          className='text-left focus:outline-none hover:text-info'
           onClick={() => updateMoves([...moves, move])}
           onMouseOver={() => updateHover(move)}
           onMouseLeave={() => updateHover(null)}

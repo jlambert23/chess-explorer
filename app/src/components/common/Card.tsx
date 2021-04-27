@@ -9,7 +9,7 @@ export const Card: FunctionComponent<CardProps> = ({
 }) => (
   <div
     {...attributes}
-    className={`bg-primary border-2 border-gray-300 rounded overflow-hidden p-2 ${className}`}
+    className={`bg-2 text-2 border-2 rounded overflow-hidden p-2 ${className}`}
   >
     {children}
   </div>

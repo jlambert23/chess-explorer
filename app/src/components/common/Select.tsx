@@ -7,11 +7,15 @@ export type SelectProps = {
 export const Select: FunctionComponent<SelectProps> = ({
   children,
   label,
+  className,
   ...selectAttributes
 }) => (
   <div className='flex w-full'>
     {label ? <label className='font-bold'>{label}</label> : ''}
-    <select {...selectAttributes} className='rounded border mx-2 w-full pl-0.5'>
+    <select
+      className={`bg-2 rounded border mx-2 w-full pl-0.5 ${className}`}
+      {...selectAttributes}
+    >
       {children}
     </select>
   </div>

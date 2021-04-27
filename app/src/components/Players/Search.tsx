@@ -19,12 +19,12 @@ const Search: FunctionComponent<{ onSearch: (term: string) => void }> = ({
         <input
           value={input.value}
           onChange={(e) => setInput({ value: e.target.value })}
-          className='ml-2 border-2 rounded pl-1'
+          className='bg-1 ml-2 border-2 rounded pl-1'
         />
       </div>
       <Button
         type='submit'
-        className='w-1/6 disabled:bg-gray-500 disabled:opacity-20'
+        className='w-1/6 dark:bg-1 bg-gray-100'
         disabled={!input.value}
       >
         <strong>Find Player</strong>
