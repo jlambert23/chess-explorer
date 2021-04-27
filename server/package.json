@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev --max-old-space-size=4096 --respawn src/app.ts",
-    "dev": "concurrently \"npm start\" \"npm start --prefix app\"",
+    "dev": "concurrently \"npm start\" \"npm start --prefix ../app\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
