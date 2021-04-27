@@ -4,6 +4,11 @@ import { NavLink } from 'react-router-dom';
 import logo from '../../images/logo.png';
 import { Toggle } from '../common';
 
+export type HeaderProps = {
+  toggleDark?: (value: boolean) => void;
+  defaultDark?: boolean;
+};
+
 const Nav: FunctionComponent<{ to: string }> = ({ to, children }) => (
   <NavLink
     to={to}
@@ -14,8 +19,9 @@ const Nav: FunctionComponent<{ to: string }> = ({ to, children }) => (
   </NavLink>
 );
 
-const Header: FunctionComponent<{ toggleDark?: (value: boolean) => void }> = ({
+const Header: FunctionComponent<HeaderProps> = ({
   toggleDark,
+  defaultDark = false,
 }) => (
   <div className='px-4 py-1.5 flex font-mono'>
     <img src={logo} alt='Logo' />
@@ -26,7 +32,11 @@ const Header: FunctionComponent<{ toggleDark?: (value: boolean) => void }> = ({
       <Nav to='/explorer'>Explorer</Nav>
       <Nav to='players'>Players</Nav>
     </div>
-    <Toggle label='Dark Mode' onChange={toggleDark} />
+    <Toggle
+      label='Dark Mode'
+      onChange={toggleDark}
+      defaultChecked={defaultDark}
+    />
   </div>
 );
 export default Header;
