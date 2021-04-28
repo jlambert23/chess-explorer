@@ -1,4 +1,4 @@
-import { ErrorRequestHandler, Express, json } from 'express';
+import { ErrorRequestHandler, Express } from 'express';
 import 'express-async-errors';
 
 import explorerRouter from './explorer';
@@ -29,7 +29,6 @@ const stringifyError = function (err: any) {
 };
 
 export default function (app: Express) {
-  app.use(json());
   app.use('/explorer', explorerRouter);
   app.use('/player', playerRouter);
   app.use(errorHandler);

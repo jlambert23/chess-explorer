@@ -1,12 +1,24 @@
 import * as mongoose from 'mongoose';
 
-export async function connect(dropDatabase = false) {
-  await mongoose.connect('mongodb://localhost/chess-explorer', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-  });
+const url = 'mongodb://localhost/chess-explorer';
+const options: mongoose.ConnectOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+};
+
+export default function connect(dropDatabase = false) {
+  try {
+    _connect(dropDatabase);
+  } catch (ex) {
+    console.log('failed to connect to database!');
+    console.log(ex);
+  }
+}
+
+async function _connect(dropDatabase: boolean) {
+  await mongoose.connect(url, options);
   console.log('established connection');
 
   if (dropDatabase) {

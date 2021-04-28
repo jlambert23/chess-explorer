@@ -1,21 +1,15 @@
 import * as cors from 'cors';
 import * as express from 'express';
 
-import { connect } from './controllers/_server';
+import connect from './controllers/_server';
 import routes from './routes/index';
 
-const url = 'localhost';
 const port = 3001;
 const app = express();
 app.use(cors());
+app.use(express.json());
 routes(app);
 
-app.listen(port, async () => {
-  console.log(`application listening on ${url}:${port}`);
-  try {
-    await connect();
-  } catch (ex) {
-    console.log('failed to connect to database!');
-    console.log(ex);
-  }
-});
+connect();
+
+app.listen(port, () => console.log(`application listening on port ${port}`));
