@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
-const url = 'mongodb://localhost/chess-explorer';
+const db = process.env.DB || 'localhost';
+const url = `mongodb://${db}:27017/chess-explorer`;
 const options: mongoose.ConnectOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -19,7 +20,7 @@ export default function connect(dropDatabase = false) {
 
 async function _connect(dropDatabase: boolean) {
   await mongoose.connect(url, options);
-  console.log('established connection');
+  console.log(`established connection to db: ${url}`);
 
   if (dropDatabase) {
     await timeout(250);

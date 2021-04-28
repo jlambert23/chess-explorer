@@ -4,7 +4,7 @@ import * as express from 'express';
 import connect from './controllers/_server';
 import routes from './routes/index';
 
-const port = 3001;
+const port = process.env.PORT || 3001;
 const app = express();
 app.use(cors());
 app.use(express.json());
