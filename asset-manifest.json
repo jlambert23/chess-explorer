@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/chess-explorer/static/css/main.fba47a8c.chunk.css",
+    "main.js": "/chess-explorer/static/js/main.be3ab56b.chunk.js",
+    "main.js.map": "/chess-explorer/static/js/main.be3ab56b.chunk.js.map",
+    "runtime-main.js": "/chess-explorer/static/js/runtime-main.17724056.js",
+    "runtime-main.js.map": "/chess-explorer/static/js/runtime-main.17724056.js.map",
+    "static/css/2.6de0dab2.chunk.css": "/chess-explorer/static/css/2.6de0dab2.chunk.css",
+    "static/js/2.130fea23.chunk.js": "/chess-explorer/static/js/2.130fea23.chunk.js",
+    "static/js/2.130fea23.chunk.js.map": "/chess-explorer/static/js/2.130fea23.chunk.js.map",
+    "index.html": "/chess-explorer/index.html",
+    "static/css/2.6de0dab2.chunk.css.map": "/chess-explorer/static/css/2.6de0dab2.chunk.css.map",
+    "static/css/main.fba47a8c.chunk.css.map": "/chess-explorer/static/css/main.fba47a8c.chunk.css.map",
+    "static/js/2.130fea23.chunk.js.LICENSE.txt": "/chess-explorer/static/js/2.130fea23.chunk.js.LICENSE.txt",
+    "static/media/404.bf8a71e1.png": "/chess-explorer/static/media/404.bf8a71e1.png",
+    "static/media/chessground.css": "/chess-explorer/static/media/wR.a5a16b36.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.17724056.js",
+    "static/css/2.6de0dab2.chunk.css",
+    "static/js/2.130fea23.chunk.js",
+    "static/css/main.fba47a8c.chunk.css",
+    "static/js/main.be3ab56b.chunk.js"
+  ]
+}
