@@ -2,6 +2,7 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://jlambert23.github.io/chess-explorer/",
   "dependencies": {
     "@craco/craco": "^6.1.1",
     "axios": "^0.21.1",

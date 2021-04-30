@@ -15,7 +15,7 @@ const App = () => {
   const [dark, setDark] = useState('dark' as 'light' | 'dark');
 
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <div
         className={`${dark} bg-0 text-0 h-screen grid grid-rows-home grid-cols-1 overflow-hidden`}
       >
