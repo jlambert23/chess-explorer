@@ -1,7 +1,8 @@
 import * as mongoose from 'mongoose';
 
 const db = process.env.DB || 'localhost';
-const url = `mongodb://${db}:27017/chess-explorer`;
+const port = process.env.DB_PORT || '27017';
+const url = `mongodb://${db}:${port}/chess-explorer`;
 const options: mongoose.ConnectOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
