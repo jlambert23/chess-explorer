@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.f77ac464.chunk.css",
-    "main.js": "/static/js/main.c38f30f7.chunk.js",
-    "main.js.map": "/static/js/main.c38f30f7.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.d20d844e.js",
-    "runtime-main.js.map": "/static/js/runtime-main.d20d844e.js.map",
-    "static/css/2.6b5dde4d.chunk.css": "/static/css/2.6b5dde4d.chunk.css",
-    "static/js/2.09a87698.chunk.js": "/static/js/2.09a87698.chunk.js",
-    "static/js/2.09a87698.chunk.js.map": "/static/js/2.09a87698.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.6b5dde4d.chunk.css.map": "/static/css/2.6b5dde4d.chunk.css.map",
-    "static/css/main.f77ac464.chunk.css.map": "/static/css/main.f77ac464.chunk.css.map",
-    "static/js/2.09a87698.chunk.js.LICENSE.txt": "/static/js/2.09a87698.chunk.js.LICENSE.txt",
-    "static/media/404.bf8a71e1.png": "/static/media/404.bf8a71e1.png",
-    "static/media/chessground.css": "/static/media/wR.a5a16b36.svg"
+    "main.css": "/chess-explorer/static/css/main.f77ac464.chunk.css",
+    "main.js": "/chess-explorer/static/js/main.aed41c87.chunk.js",
+    "main.js.map": "/chess-explorer/static/js/main.aed41c87.chunk.js.map",
+    "runtime-main.js": "/chess-explorer/static/js/runtime-main.17724056.js",
+    "runtime-main.js.map": "/chess-explorer/static/js/runtime-main.17724056.js.map",
+    "static/css/2.6de0dab2.chunk.css": "/chess-explorer/static/css/2.6de0dab2.chunk.css",
+    "static/js/2.09a87698.chunk.js": "/chess-explorer/static/js/2.09a87698.chunk.js",
+    "static/js/2.09a87698.chunk.js.map": "/chess-explorer/static/js/2.09a87698.chunk.js.map",
+    "index.html": "/chess-explorer/index.html",
+    "static/css/2.6de0dab2.chunk.css.map": "/chess-explorer/static/css/2.6de0dab2.chunk.css.map",
+    "static/css/main.f77ac464.chunk.css.map": "/chess-explorer/static/css/main.f77ac464.chunk.css.map",
+    "static/js/2.09a87698.chunk.js.LICENSE.txt": "/chess-explorer/static/js/2.09a87698.chunk.js.LICENSE.txt",
+    "static/media/404.bf8a71e1.png": "/chess-explorer/static/media/404.bf8a71e1.png",
+    "static/media/chessground.css": "/chess-explorer/static/media/wR.a5a16b36.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.d20d844e.js",
-    "static/css/2.6b5dde4d.chunk.css",
+    "static/js/runtime-main.17724056.js",
+    "static/css/2.6de0dab2.chunk.css",
     "static/js/2.09a87698.chunk.js",
     "static/css/main.f77ac464.chunk.css",
-    "static/js/main.c38f30f7.chunk.js"
+    "static/js/main.aed41c87.chunk.js"
   ]
 }
