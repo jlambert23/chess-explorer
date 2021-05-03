@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { useState } from 'react';
 import Chessground, { Color, DrawShape, Key } from 'react-chessground';
 import 'react-chessground/dist/styles/chessground.css';
+import Chess, { ChessInstance } from 'chess.js';
 
 import { ReactComponent as FlipSvg } from '../../images/flip.svg';
 import { Move } from '../../models/explorer.model';
@@ -10,6 +12,12 @@ interface ChessboardProps {
   hover?: Move | null;
   lastMove?: Key[];
 }
+
+const newChess = (fen?: string) => {
+  const start = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  // @ts-ignore
+  return new Chess(fen === 'start' ? start : fen);
+};
 
 const FlipButton = ({ onClick }: { onClick?: () => void }) => (
   <button onClick={onClick} className='focus:outline-none'>
@@ -24,7 +32,12 @@ const Chessboard = ({
   hover,
   lastMove = [],
 }: ChessboardProps) => {
+  const [chess, setChess] = useState<ChessInstance>(newChess());
   const [orientation, setOrientation] = useState('white' as Color);
+
+  useEffect(() => {
+    setChess(newChess(position));
+  }, [position]);
 
   const onFlip = () => {
     setOrientation(orientation === 'white' ? 'black' : 'white');
@@ -40,7 +53,7 @@ const Chessboard = ({
       <Chessground
         width='100%'
         height='100%'
-        fen={position}
+        fen={chess.fen()}
         selected={''}
         lastMove={lastMove}
         orientation={orientation}
