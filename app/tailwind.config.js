@@ -36,6 +36,13 @@ module.exports = {
         'screen-60': '60vh',
         'screen-50': '50vh',
       },
+      width: {
+        'screen-90': '90vh',
+        'screen-80': '80vh',
+        'screen-70': '70vh',
+        'screen-60': '60vh',
+        'screen-50': '50vh',
+      },
       listStyleType: {
         circle: 'circle',
       },

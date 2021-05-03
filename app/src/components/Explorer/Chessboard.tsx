@@ -1,9 +1,7 @@
-import Chessground, { DrawShape, Key } from 'react-chessground';
+import Chessground, { Color, DrawShape, Key } from 'react-chessground';
 import 'react-chessground/dist/styles/chessground.css';
 
 import { Move } from '../../models/explorer.model';
-
-const BOARD_SIZE = '80vh';
 
 interface ChessboardProps {
   position?: string;
@@ -16,10 +14,10 @@ const Chessboard = ({
   hover,
   lastMove = [],
 }: ChessboardProps) => (
-  <div>
+  <div className='w-screen-80 h-screen-80'>
     <Chessground
-      width={BOARD_SIZE}
-      height={BOARD_SIZE}
+      width='100%'
+      height='100%'
       fen={position}
       selected={''}
       lastMove={lastMove}
