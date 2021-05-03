@@ -26,7 +26,7 @@ const Chessboard = ({
 }: ChessboardProps) => {
   const [orientation, setOrientation] = useState('white' as Color);
 
-  const flip = () => {
+  const onFlip = () => {
     setOrientation(orientation === 'white' ? 'black' : 'white');
   };
 
@@ -34,7 +34,7 @@ const Chessboard = ({
     <div className='bg-0 rounded p-7 w-screen-80 h-screen-80'>
       <div className='float-right'>
         <div className='fixed z-10 -m-6'>
-          <FlipButton onClick={flip} />
+          <FlipButton onClick={onFlip} />
         </div>
       </div>
       <Chessground
