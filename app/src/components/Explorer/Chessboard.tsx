@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useState } from 'react';
-import Chessground, { Color, DrawShape, Key } from 'react-chessground';
+import Chessground, {
+  Color,
+  Dests,
+  DrawShape,
+  Key,
+  Piece,
+} from 'react-chessground';
 import 'react-chessground/dist/styles/chessground.css';
-import Chess, { ChessInstance } from 'chess.js';
+import Chess, { ChessInstance, Square } from 'chess.js';
 
 import { ReactComponent as FlipSvg } from '../../images/flip.svg';
 import { Move } from '../../models/explorer.model';
@@ -11,13 +16,19 @@ interface ChessboardProps {
   position?: string;
   hover?: Move | null;
   lastMove?: Key[];
+  onBoardMove?: (move: Move) => void;
 }
 
-const newChess = (fen?: string) => {
-  const start = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+const newChess = (fen?: string) =>
   // @ts-ignore
-  return new Chess(fen === 'start' ? start : fen);
-};
+  new Chess(fen === 'start' ? undefined : fen) as ChessInstance;
+
+const calcDests = (chess: ChessInstance) =>
+  chess.SQUARES.reduce((acc, square) => {
+    const moves = chess.moves({ square, verbose: true }).map(({ to }) => to);
+    if (moves.length) acc.set(square, moves);
+    return acc;
+  }, new Map() as Dests);
 
 const FlipButton = ({ onClick }: { onClick?: () => void }) => (
   <button onClick={onClick} className='focus:outline-none'>
@@ -31,16 +42,37 @@ const Chessboard = ({
   position = 'start',
   hover,
   lastMove = [],
+  onBoardMove = () => null,
 }: ChessboardProps) => {
-  const [chess, setChess] = useState<ChessInstance>(newChess());
+  const [chess, setChess] = useState(newChess());
+  const [dests, setDests] = useState(calcDests(chess));
   const [orientation, setOrientation] = useState('white' as Color);
 
   useEffect(() => {
-    setChess(newChess(position));
+    const updated = newChess(position);
+    setChess(updated);
+    setDests(calcDests(updated));
   }, [position]);
 
   const onFlip = () => {
     setOrientation(orientation === 'white' ? 'black' : 'white');
+  };
+
+  const onMove: (from: Key, to: Key, capture?: Piece) => void = (from, to) => {
+    const instance = newChess(chess.fen());
+    const move = instance.move({ from: from as Square, to: to as Square });
+
+    if (move) {
+      onBoardMove({
+        move: {
+          fen: instance.fen(),
+          color: instance.turn() === 'w' ? 'white' : 'black',
+          from: move.from,
+          to: move.to,
+          notation: instance.history().pop(),
+        },
+      });
+    }
   };
 
   return (
@@ -57,6 +89,8 @@ const Chessboard = ({
         selected={''}
         lastMove={lastMove}
         orientation={orientation}
+        movable={{ free: false, dests }}
+        onMove={onMove}
         drawable={{
           autoShapes: hover?.move
             ? [

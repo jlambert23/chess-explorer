@@ -8,9 +8,9 @@ export interface ExplorerData {
 }
 
 export interface Move {
-  blackWon: number;
-  whiteWon: number;
-  draw: number;
+  blackWon?: number;
+  whiteWon?: number;
+  draw?: number;
   move: MoveDetails;
 }
 
