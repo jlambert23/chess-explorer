@@ -46,6 +46,7 @@ const Chessboard = ({
 }: ChessboardProps) => {
   const [chess, setChess] = useState(newChess());
   const [dests, setDests] = useState(calcDests(chess));
+  const [animation, setAnimation] = useState({ enabled: true });
   const [orientation, setOrientation] = useState('white' as Color);
 
   useEffect(() => {
@@ -63,6 +64,11 @@ const Chessboard = ({
     const move = instance.move({ from: from as Square, to: to as Square });
 
     if (move) {
+      if (animation.enabled) {
+        setAnimation({ enabled: false });
+        setTimeout(() => setAnimation({ enabled: true }), 200);
+      }
+
       onBoardMove({
         move: {
           fen: instance.fen(),
@@ -88,6 +94,7 @@ const Chessboard = ({
         fen={chess.fen()}
         selected={''}
         lastMove={lastMove}
+        animation={animation}
         orientation={orientation}
         movable={{ free: false, dests }}
         onMove={onMove}
