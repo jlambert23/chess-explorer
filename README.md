@@ -2,7 +2,7 @@
 
 https://jlambert23.github.io/chess-explorer
 
-(Please be careful loading new users, it takes a lot of processing and is very slow)
+(Please be careful loading new players, it takes a lot of processing and is very slow)
 
 Data gathered from [Chess.com published API](https://www.chess.com/news/view/published-data-api)
 
