@@ -27,6 +27,11 @@ const Explorer = () => {
     setHover(null);
   };
 
+  const onBoardMove = async (move: Move) => {
+    await setExplorer({ ...explorer, fen: move.move.fen });
+    setMoves([...moves, move]);
+  };
+
   return (
     <div className='h-full flex justify-center items-center'>
       <div className='flex justify-center gap-14 h-screen-80'>
@@ -34,6 +39,7 @@ const Explorer = () => {
           position={explorer?.fen}
           hover={hover}
           lastMove={getLastMove()}
+          onBoardMove={onBoardMove}
         />
         <Sidebar
           players={players}
