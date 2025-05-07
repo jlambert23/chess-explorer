@@ -1,6 +1,8 @@
+
+
 # chess-explorer
 
-https://jlambert23.github.io/chess-explorer
+https://jlambert23.github.io/chess-explorer (⚠️ Server out of order)
 
 (Please be careful loading new players, it takes a lot of processing and is very slow)
 
